@@ -1,7 +1,6 @@
 {
   "name": "http-data-request",
   "description": "http data request for project",
-  "private": true,
   "version": "0.1.0",
   "author": "TerryZ <terry5@foxmail.com>",
   "type": "module",
@@ -28,7 +27,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "repository": {

@@ -3,9 +3,7 @@ import { key, message, statuses, exception } from './constants'
 import { unpacking, handleResults } from './results'
 import { isAxiosTimeout, displayMessage, handleUrl, isNoResponseBody, isSuccess, isRefreshTokenInvalid } from './utils'
 import Exception from './exception'
-import { Storage } from '@utils-core/main'
-
-const { Cache } = Storage
+import { Cache } from './cache'
 
 /**
  * Catch and handle request cancelled situation
