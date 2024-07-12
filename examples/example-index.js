@@ -128,31 +128,24 @@ export function doDelete () {
 export function accessTokenInvalid () {
   // https://run.mocky.io/v3/cb5d1196-df3c-4a1e-b3c5-2c9d2e9992b4
   // baseUrl + '/http/access-token-invalid'
-  post(baseUrl + '/http/access-token-invalid')
-    .then(resp => {
-      console.dir(resp)
-    })
+  const url = baseUrl + '/http/access-token-invalid'
+  post(url, { id: 1 })
+    .then(resp => { console.dir(resp) })
     .catch(error => {
       console.dir(error)
     })
-  post(baseUrl + '/http/access-token-invalid')
-    .then(resp => {
-      console.dir(resp)
-    })
+  post(url, { id: 2 })
+    .then(resp => { console.dir(resp) })
     .catch(error => {
       console.dir(error)
     })
-  post(baseUrl + '/http/access-token-invalid')
-    .then(resp => {
-      console.dir(resp)
-    })
+  post(url, { id: 3 })
+    .then(resp => { console.dir(resp) })
     .catch(error => {
       console.dir(error)
     })
-  post(baseUrl + '/http/access-token-invalid')
-    .then(resp => {
-      console.dir(resp)
-    })
+  post(url, { id: 4 })
+    .then(resp => { console.dir(resp) })
     .catch(error => {
       console.dir(error)
     })

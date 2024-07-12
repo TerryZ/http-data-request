@@ -25,8 +25,10 @@ Mock.mock(path + '/http/business-error', options => {
 })
 
 let refreshed = false
+
 Mock.mock(path + '/http/access-token-invalid', options => {
   if (refreshed) {
+    // 第二次是在刷新 access token 后，请求成功
     return {
       code: 0,
       msg: 'ok',
@@ -35,6 +37,7 @@ Mock.mock(path + '/http/access-token-invalid', options => {
       }
     }
   } else {
+    // 第一次请求，要求刷新 access token
     return {
       code: 10,
       msg: 'access token invalid.',
@@ -45,6 +48,7 @@ Mock.mock(path + '/http/access-token-invalid', options => {
 
 Mock.mock(path + '/auth/refresh-token', () => {
   refreshed = true
+  // 刷新 token 成功
   // return {
   //   code: 0,
   //   msg: 'ok',
@@ -56,6 +60,7 @@ Mock.mock(path + '/auth/refresh-token', () => {
   //     }
   //   }
   // }
+  // 刷新 token 失败
   return {
     code: 11,
     msg: 'refresh token invalid.',

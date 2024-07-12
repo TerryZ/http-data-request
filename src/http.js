@@ -1,4 +1,4 @@
-import { prototype, CancelToken } from './settings'
+import { prototype } from './settings'
 import { isSessionTimeout } from './storage'
 import { execute } from './handle'
 import { handleUrl, timeConvert, buildSettings, checkEnvironment } from './utils'
@@ -53,7 +53,8 @@ class Http {
     // axios instance
     this.http = prototype(this.options)
     // axios cancel token object
-    this.cancelTokenSource = CancelToken.source()
+    // this.cancelTokenSource = CancelToken.source()
+    this.cancelControl = new AbortController()
   }
 
   /**
@@ -76,7 +77,8 @@ class Http {
     }
 
     const settings = buildSettings(handleUrl(url, options.baseUrl), data, userSettings)
-    settings.cancelToken = this.cancelTokenSource.token
+    // settings.cancelToken = this.cancelTokenSource.token
+    settings.signal = this.cancelControl.signal
 
     return execute(http, options, settings)
   }
@@ -87,9 +89,11 @@ class Http {
    * @memberof Http
    */
   cancel () {
-    this.cancelTokenSource.cancel()
+    // this.cancelTokenSource.cancel()
     // generate a new cancel token source
-    this.cancelTokenSource = CancelToken.source()
+    // this.cancelTokenSource = CancelToken.source()
+    this.cancelControl.abort()
+    this.cancelControl = new AbortController()
   }
 
   /**

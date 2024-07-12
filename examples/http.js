@@ -1,6 +1,5 @@
 import {
-  Http,
-  httpSetup,
+  useHttpDataRequest,
   EXCEPTION_BUSINESS,
   EXCEPTION_AUTH_INVALID
 } from '@/'
@@ -23,14 +22,21 @@ const options = {
     console.error(message)
     // router.replace({ path: base.login })
     if (type === EXCEPTION_AUTH_INVALID) {
-      console.log('登录授权失效后续处理！')
+      console.log('登录授权失效后续处理，通常跳转至登录')
+      // console.log(cancel)
+      cancel()
     }
   }
 }
 
-const instance = new Http(options)
-
 export const {
   http, get, post, put, patch, del,
   cancel, isSessionTimeout
-} = httpSetup(instance)
+} = useHttpDataRequest(options)
+
+// const instance = new Http(options)
+
+// export const {
+//   http, get, post, put, patch, del,
+//   cancel, isSessionTimeout
+// } = httpSetup(instance)

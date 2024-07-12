@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 import { key, HEADER_ACCESS_TOKEN } from './constants'
 import { handleToken } from './storage'
 import { refreshAccessToken } from './handle'
@@ -9,7 +10,7 @@ export function prototype (options) {
   let isRefreshing = false
   let waitingQueue = []
 
-  const handleQueue = function (error) {
+  const handleQueue = error => {
     waitingQueue.forEach(request => request(error))
     waitingQueue = []
   }
@@ -53,12 +54,15 @@ export function prototype (options) {
     response => {
       const originalRequest = response.config
       const { data: { code } } = response
-
-      // only handle access token invalid and need to refresh situation below
+      // success and business exception
       if (!isAccessTokenInvalid(code)) return response
-
+      /**
+       * Authorization failed
+       * only handle access token invalid and need to refresh situation below
+       */
       if (!isRefreshing) {
         isRefreshing = true
+        console.log(originalRequest.data)
 
         return refreshAccessToken(http, options)
           .then(resp => {
@@ -69,6 +73,8 @@ export function prototype (options) {
             return http(originalRequest)
           })
           .catch(error => {
+            console.log('refresh access token failed')
+            console.log('waiting queue length:' + waitingQueue.length)
             handleQueue(error)
             return Promise.reject(error)
           })

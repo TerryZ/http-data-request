@@ -1,7 +1,14 @@
 import axios from 'axios'
 import { key, message, statuses, exception } from './constants'
 import { unpacking, handleResults } from './results'
-import { isAxiosTimeout, displayMessage, handleUrl, isNoResponseBody, isSuccess, isRefreshTokenInvalid } from './utils'
+import {
+  displayMessage,
+  handleUrl,
+  isSuccess,
+  isAxiosTimeout,
+  isNoResponseBody,
+  isRefreshTokenInvalid
+} from './utils'
 import Exception from './exception'
 import { Cache } from './cache'
 
@@ -13,7 +20,7 @@ import { Cache } from './cache'
 export function cancelled (response) {
   if (axios.isCancel(response)) {
     // silently display request cancelled information in console
-    console.error(message.cancelled)
+    console.warn(message.cancelled)
     throw new Exception(message.cancelled, exception.cancelled)
   }
   // throw data object to next catch

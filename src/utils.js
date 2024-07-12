@@ -107,7 +107,7 @@ export function buildSettings (url, data, userSettings) {
   const settings = Object.assign({
     method: 'post'
   }, userSettings, {
-    url: url,
+    url,
     data: data || {}
   })
   // change `data` field to `params` when method type is `GET`
