@@ -12,7 +12,7 @@ import { Cache } from './cache'
  */
 export function cancelled (response) {
   if (axios.isCancel(response)) {
-    // silently display request cancelled infomation in console
+    // silently display request cancelled information in console
     console.error(message.cancelled)
     throw new Exception(message.cancelled, exception.cancelled)
   }
@@ -23,7 +23,6 @@ export function cancelled (response) {
 /**
  * Check if user authorization still valid
  *
- * @export
  * @param {object} response
  * @param {function} callback
  */
@@ -38,7 +37,6 @@ export function verifyAuthorization (response, callback) {
 /**
  * Handle business exception
  *
- * @export
  * @param {object} response
  * @param {function} callback
  */
@@ -53,7 +51,6 @@ export function businessError (response, callback) {
 /**
  * Handle http(axios) original error
  *
- * @export
  * @param {object} response
  * @param {function} callback
  */

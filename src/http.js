@@ -5,7 +5,7 @@ import { handleUrl, timeConvert, buildSettings, checkEnvironment } from './utils
 import { defaultOptions, method } from './constants'
 
 /**
- * http 数据请求
+ * http data request
  */
 class Http {
   /**
@@ -113,13 +113,8 @@ class Http {
  */
 Object.values(method).forEach(type => {
   Http.prototype[type] = function (url, data, userSettings) {
-    return this.fetch(
-      url,
-      data,
-      Object.assign({}, userSettings, {
-        method: type
-      })
-    )
+    const setting = { ...userSettings, method: type }
+    return this.fetch(url, data, setting)
   }
 })
 

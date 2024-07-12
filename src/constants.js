@@ -70,31 +70,23 @@ export const message = {
   noStatus: '数据加载失败，请联系管理员！'
 }
 
-// export const code = {
-//   // 请求失败
-//   FAIL: -1,
-//   // 请求成功
-//   SUCCESS: 0,
-//   // 认证登录超时或用户权限发生变更
-//   AUTH_INVALID: 2,
-//   VALIDATE: 3
-// }
-
 /**
- * 业务状态码
+ * State codes
  *
- * 0: 成功
- * 901: access token 无效，需要使用 refresh token 进行刷新
- * 902: refresh token 失效，跳转至登录
+ * 0: success
+ * 10: the access token is invalid., need to use refresh token to refresh
+ * 11: the refresh token is invalid, need go to login
+ *
+ * rest of other codes are business exceptions
  */
 export const state = {
   SUCCESS: 0,
-  INVALID_ACCESS_TOKEN: 901,
-  INVALID_REFRESH_TOKEN: 902
+  INVALID_ACCESS_TOKEN: 10,
+  INVALID_REFRESH_TOKEN: 11
 }
 
 /**
- * 在 Storage 中存储的键名
+ * The key name stored in Storage
  */
 export const key = {
   token: 'auth-access-token',
@@ -105,7 +97,7 @@ export const key = {
 }
 
 /**
- * 请求类型
+ * Request method types
  */
 export const method = {
   get: 'get',
@@ -116,21 +108,17 @@ export const method = {
 }
 
 /**
- * 请求异常常量
+ * Exception types
  */
 export const exception = {
-  // 业务异常
   business: 'exception-business',
-  // 用户登录授权失效异常
   authInvalid: 'exception-auth-invalid',
-  // 系统错误
   system: 'exception-system',
-  // 请求中断异常
   cancelled: 'exception-cancelled'
 }
 
 /**
- * default options
+ * Default options
  */
 export const defaultOptions = {
   baseUrl: '/',
@@ -144,6 +132,11 @@ export const defaultOptions = {
   keyExpiresIn: 'expiresIn',
   // 单次请求超时时间，单位：毫秒
   timeout: 20000,
+  states: {
+    success: state.SUCCESS,
+    invalidAccessToken: state.INVALID_ACCESS_TOKEN,
+    invalidRefreshToken: state.INVALID_REFRESH_TOKEN
+  },
   exception: function (message, type) {
     window.alert(message)
   }

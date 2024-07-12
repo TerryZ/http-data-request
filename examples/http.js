@@ -4,9 +4,10 @@ import {
   EXCEPTION_BUSINESS,
   EXCEPTION_AUTH_INVALID
 } from '@/'
+import { path } from './mock'
 
 const options = {
-  baseUrl: '',
+  baseUrl: path,
   expiresIn: 2,
   // keyAccessToken: 'myToken',
   // keyExpiresIn: 'myExpiresIn',
@@ -18,7 +19,8 @@ const options = {
       return
     }
 
-    alert(message)
+    // alert(message)
+    console.error(message)
     // router.replace({ path: base.login })
     if (type === EXCEPTION_AUTH_INVALID) {
       console.log('登录授权失效后续处理！')

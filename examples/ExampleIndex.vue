@@ -1,13 +1,12 @@
 <template>
   <div class="p-3">
-    <h2>Http 数据请求</h2>
-    <div class="shadow p-5 rounded-3">
+    <section class="">
       <h3 class="mt-0">
         常规使用场景
       </h3>
       <button
         type="button"
-        class="btn btn-light me-3"
+        class="btn btn-secondary me-3"
         @click="regularSuccess"
       >
         请求成功
@@ -52,9 +51,9 @@
       >
         http-500
       </button>
-    </div>
+    </section>
 
-    <div class="border p-5 rounded-3 mt-5 mx-0">
+    <section class="my-3">
       <h3 class="mt-0 d-flex">
         HTTP Methods
       </h3>
@@ -93,9 +92,9 @@
       >
         Delete
       </button>
-    </div>
+    </section>
 
-    <div class="border p-5 rounded-3 mt-5 row mx-0">
+    <section class="my-3 row">
       <div class="col-md-6">
         <h3 class="mt-0">
           请求异常
@@ -120,17 +119,33 @@
         <h3 class="mt-0">
           中断请求
         </h3>
-        <button
-          type="button"
-          class="btn btn-danger me-3"
-          @click="cancel"
-        >
-          中断当前正在执行的请求
-        </button>
-      </div>
-    </div>
 
-    <div class="border p-5 rounded-3 mt-5">
+        <div class="d-flex">
+          <div
+            class="d-flex align-items-center me-3 bg-secondary-subtle rounded-3 px-3"
+            v-if="loading"
+          >
+            <div
+              class="spinner-border spinner-border-sm text-dark me-3"
+              role="status"
+            >
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            Loading...
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-danger me-3"
+            @click="doCancel"
+          >
+            中断当前正在执行的请求
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="my-3">
       <h3>Token</h3>
       <div>
         <button
@@ -141,9 +156,9 @@
           access token invalid
         </button>
       </div>
-    </div>
+    </section>
 
-    <div class="shadow p-5 rounded-3 mt-5">
+    <section class="">
       <h3 class="mt-0">
         调试
       </h3>
@@ -160,13 +175,33 @@
           class="btn btn-danger me-3"
           @click="cleanStorage"
         >
-          清空 storge 中存储的数据
+          清空 storage 中存储的数据
         </button>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
 <script setup>
-import { regularSuccess } from './example-index'
+import {
+  regularSuccess,
+  accessTokenInvalid,
+  businessError,
+  checkSessionTimeout,
+  cleanStorage,
+  doCancel,
+  doDelete,
+  doGet,
+  doPatch,
+  doPost,
+  doPut,
+  error500,
+  generateToken,
+  longTimeRequest,
+  regularTimeout,
+  successWithAccess,
+  successWithCustomAccess,
+
+  loading
+} from './example-index'
 </script>

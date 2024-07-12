@@ -5,7 +5,6 @@ import { refreshAccessToken } from './handle'
 import { isAccessTokenInvalid } from './utils'
 import { Cache } from './cache'
 
-
 export function prototype (options) {
   let isRefreshing = false
   let waitingQueue = []
@@ -30,7 +29,6 @@ export function prototype (options) {
    * the timeout option in axios is response timeout, not connection timeout
    */
   http.defaults.timeout = options.timeout
-
   // if(!ie9) axios.defaults.baseURL = config.baseUrl;
   http.defaults.withCredentials = false
 
@@ -48,7 +46,6 @@ export function prototype (options) {
     },
     error => Promise.reject(error)
   )
-
   /**
    * response interceptors
    */
