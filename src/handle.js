@@ -18,6 +18,7 @@ import { Cache } from './cache'
  * @param {object} response
  */
 export function cancelled (response) {
+  console.log(response)
   if (axios.isCancel(response)) {
     // silently display request cancelled information in console
     console.warn(message.cancelled)
@@ -35,7 +36,11 @@ export function cancelled (response) {
  */
 export function verifyAuthorization (response, callback) {
   if (response instanceof Exception && response.isAuthInvalid()) {
-    displayMessage(message.authInvalid, callback, exception.authInvalid)
+    displayMessage(
+      message.authInvalid,
+      callback,
+      exception.authInvalid
+    )
   }
   // throw data object to next catch
   throw response
@@ -49,7 +54,11 @@ export function verifyAuthorization (response, callback) {
  */
 export function businessError (response, callback) {
   if (response instanceof Exception && response.isBusiness()) {
-    displayMessage(response.message || message.error, callback, exception.business)
+    displayMessage(
+      response.message || message.error,
+      callback,
+      exception.business
+    )
   }
   // throw data object to final catch
   throw response
@@ -91,10 +100,10 @@ export function systemError (response, callback) {
  * Execute http request by options and settings
  *
  * @param {object} http - the Axios instance
- * @param {object} options - Http plugin initialize options
  * @param {object} settings - the Axios settings
+ * @param {object} options - Http plugin initialize options
  */
-export function execute (http, options, settings) {
+export function execute (http, settings, options) {
   return http(settings)
     // unpack axios wrapper
     .then(response => unpacking(response))

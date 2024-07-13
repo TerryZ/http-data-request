@@ -132,21 +132,31 @@ export function accessTokenInvalid () {
   post(url, { id: 1 })
     .then(resp => { console.dir(resp) })
     .catch(error => {
-      console.dir(error)
+      console.log(1, error)
+      // console.dir(error)
     })
   post(url, { id: 2 })
     .then(resp => { console.dir(resp) })
     .catch(error => {
-      console.dir(error)
+      console.log(2, error)
+      // console.dir(error)
     })
   post(url, { id: 3 })
     .then(resp => { console.dir(resp) })
     .catch(error => {
-      console.dir(error)
+      console.log(3, error)
+      // console.dir(error)
     })
   post(url, { id: 4 })
     .then(resp => { console.dir(resp) })
     .catch(error => {
-      console.dir(error)
+      console.log(4, error)
+      // console.dir(error)
+    })
+  post(url, { id: 5 })
+    .then(resp => { console.dir(resp) })
+    .catch(error => {
+      console.log(5, error)
+      // console.dir(error)
     })
 }

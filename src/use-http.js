@@ -5,12 +5,25 @@ import { handleUrl, timeConvert, buildSettings, checkEnvironment } from './utils
 import { defaultOptions } from './constants'
 
 export function useHttpDataRequest (setupOptions) {
+  let cancelControl = new AbortController()
   const options = Object.assign({}, defaultOptions, setupOptions)
   // user authorization expires-in millisecond
   options.expiresInMillisecond = timeConvert(options.expiresIn)
   // axios instance
-  const http = prototype(options)
-  let cancelControl = new AbortController()
+  const http = prototype(options, {
+    getCancelControl,
+    cancel
+  })
+  /**
+   * Cancel controller factory
+   */
+  function getCancelControl () {
+    console.log('get-cancel')
+    if (!cancelControl || cancelControl.signal.aborted) {
+      cancelControl = new AbortController()
+    }
+    return cancelControl
+  }
   /**
    * Execute http request
    *
@@ -31,20 +44,22 @@ export function useHttpDataRequest (setupOptions) {
 
     const settings = buildSettings(handleUrl(url, options.baseUrl), data, userSettings)
     // settings.cancelToken = this.cancelTokenSource.token
-    settings.signal = cancelControl.signal
+    settings.signal = getCancelControl().signal
 
-    return execute(http, options, settings)
+    return execute(http, settings, options)
   }
   /**
    * Cancel all of the requests
    */
   function cancel () {
+    console.warn('cancel all requests')
     // this.cancelTokenSource.cancel()
     // generate a new cancel token source
     // this.cancelTokenSource = CancelToken.source()
     cancelControl.abort()
+
     // generate a new controller
-    cancelControl = new AbortController()
+    // cancelControl = new AbortController()
   }
   /**
    * Check if user authorization session timeout

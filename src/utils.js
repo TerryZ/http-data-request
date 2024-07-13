@@ -9,7 +9,9 @@ const { SUCCESS, INVALID_ACCESS_TOKEN, INVALID_REFRESH_TOKEN } = state
  * @param {number} type - message type
  */
 export function displayMessage (message, callback, type = exception.system) {
-  typeof callback === 'function' ? callback(message, type) : window.alert(message)
+  typeof callback === 'function'
+    ? callback(message, type)
+    : window.alert(message)
 }
 
 /**
