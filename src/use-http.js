@@ -18,7 +18,7 @@ export function useHttpDataRequest (setupOptions) {
    * Cancel controller factory
    */
   function getCancelControl () {
-    console.log('get-cancel')
+    // console.log('get-cancel')
     if (!cancelControl || cancelControl.signal.aborted) {
       cancelControl = new AbortController()
     }
@@ -34,8 +34,6 @@ export function useHttpDataRequest (setupOptions) {
    * @returns {function} a promise type function
    */
   function fetch (url, data, userSettings) {
-    // const { http, options } = this
-
     // check parameters, options and environment
     const result = checkEnvironment(url, options)
     if (result) {
@@ -43,7 +41,6 @@ export function useHttpDataRequest (setupOptions) {
     }
 
     const settings = buildSettings(handleUrl(url, options.baseUrl), data, userSettings)
-    // settings.cancelToken = this.cancelTokenSource.token
     settings.signal = getCancelControl().signal
 
     return execute(http, settings, options)
@@ -52,14 +49,8 @@ export function useHttpDataRequest (setupOptions) {
    * Cancel all of the requests
    */
   function cancel () {
-    console.warn('cancel all requests')
-    // this.cancelTokenSource.cancel()
-    // generate a new cancel token source
-    // this.cancelTokenSource = CancelToken.source()
+    // console.warn('cancel all requests')
     cancelControl.abort()
-
-    // generate a new controller
-    // cancelControl = new AbortController()
   }
   /**
    * Check if user authorization session timeout
