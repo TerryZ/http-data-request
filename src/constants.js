@@ -71,7 +71,7 @@ export const message = {
 }
 
 /**
- * State codes
+ * Built-in State codes
  *
  * 0: success
  * 10: the access token is invalid., need to use refresh token to refresh

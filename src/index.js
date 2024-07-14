@@ -1,11 +1,6 @@
 import { exception } from './constants'
 
-// export http class
-export { default as Http } from './http'
-// methods adaptor
-export { httpSetup } from './utils'
-
-export * from './use-http'
+export * from './http'
 
 // export exception constants
 export const EXCEPTION_BUSINESS = exception.business

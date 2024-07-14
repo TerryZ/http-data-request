@@ -1,6 +1,7 @@
 import Mock from 'mockjs'
 
 export const path = 'http://http-data-request.com'
+export const baseUrl = ''
 
 // 设置延迟响应
 Mock.setup({

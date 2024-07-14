@@ -4,12 +4,11 @@ import { unpacking, handleResults } from './results'
 import {
   displayMessage,
   handleUrl,
-  isSuccess,
   isAxiosTimeout,
   isNoResponseBody,
-  isRefreshTokenInvalid
+  useStateCheck
 } from './utils'
-import Exception from './exception'
+import { Exception } from './settings'
 import { Cache } from './cache'
 
 /**
@@ -17,8 +16,7 @@ import { Cache } from './cache'
  *
  * @param {object} response
  */
-export function cancelled (response) {
-  console.log(response)
+export function handleCancelled (response) {
   if (axios.isCancel(response)) {
     // silently display request cancelled information in console
     console.warn(message.cancelled)
@@ -34,7 +32,7 @@ export function cancelled (response) {
  * @param {object} response
  * @param {function} callback
  */
-export function verifyAuthorization (response, callback) {
+export function handleAuthorization (response, callback) {
   if (response instanceof Exception && response.isAuthInvalid()) {
     displayMessage(
       message.authInvalid,
@@ -52,7 +50,7 @@ export function verifyAuthorization (response, callback) {
  * @param {object} response
  * @param {function} callback
  */
-export function businessError (response, callback) {
+export function handleBusinessError (response, callback) {
   if (response instanceof Exception && response.isBusiness()) {
     displayMessage(
       response.message || message.error,
@@ -70,7 +68,7 @@ export function businessError (response, callback) {
  * @param {object} response
  * @param {function} callback
  */
-export function systemError (response, callback) {
+export function handleSystemError (response, callback) {
   // throw exception to user catch function directly
   if (response instanceof Exception) throw response
 
@@ -103,16 +101,15 @@ export function systemError (response, callback) {
  * @param {object} settings - the Axios settings
  * @param {object} options - Http plugin initialize options
  */
-export function execute (http, settings, options) {
+export function httpDataRequest (http, settings, options) {
   return http(settings)
     // unpack axios wrapper
     .then(response => unpacking(response))
-    // return the data to caller when request success
-    .then(result => handleResults(result, options))
-    .catch(thrown => cancelled(thrown))
-    .catch(thrown => verifyAuthorization(thrown, options.exception))
-    .catch(thrown => businessError(thrown, options.exception))
-    .catch(thrown => systemError(thrown, options.exception))
+    .then(data => handleResults(data, options))
+    .catch(thrown => handleCancelled(thrown))
+    .catch(thrown => handleAuthorization(thrown, options.exception))
+    .catch(thrown => handleBusinessError(thrown, options.exception))
+    .catch(thrown => handleSystemError(thrown, options.exception))
 }
 
 /**
@@ -136,12 +133,13 @@ export function refreshAccessToken (instance, options) {
       throw new Exception(message.error, exception.system)
     }
     const { code } = resp.data
+    const { isSuccess, isRefreshTokenInvalid } = useStateCheck(code, options)
     // request success, received the new access token
-    if (isSuccess(code)) {
+    if (isSuccess()) {
       return resp.data
     }
     // refresh token invalid
-    if (isRefreshTokenInvalid(code)) {
+    if (isRefreshTokenInvalid()) {
       throw new Exception(message.authInvalid, exception.authInvalid)
     }
     // other cases

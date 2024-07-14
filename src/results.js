@@ -1,8 +1,8 @@
 // import { handleSuccess } from './handle'
 import { message, exception } from './constants'
-import Exception from './exception'
+import { Exception } from './settings'
 import { handleToken, updateLastTime } from './storage'
-import { isNoResponseBody, isSuccess, isRefreshTokenInvalid } from './utils'
+import { isNoResponseBody, useStateCheck } from './utils'
 
 /**
  * Handle successful request
@@ -70,12 +70,13 @@ export function handleResults (data, options) {
   if (isNoResponseBody(data)) fail()
 
   const { code } = data
+  const { isSuccess, isRefreshTokenInvalid } = useStateCheck(code, options)
   // request success
   // server side return binary file stream, for example file download
-  if (isSuccess(code)) return handleSuccess(data, options)
+  if (isSuccess()) return handleSuccess(data, options)
   // if (isAccessTokenInvalid(code)) {}
   // user authorization invalid, need to go to login
-  if (isRefreshTokenInvalid(code)) authInvalid()
+  if (isRefreshTokenInvalid()) authInvalid()
 
   // business execution error
   // all remaining situation

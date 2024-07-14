@@ -40,18 +40,21 @@ export function isNoResponseBody (data) {
   return !data || typeof data === 'undefined'
 }
 
-export function isSuccess (code) {
-  // request success
-  // server side return binary file stream, for example file download
-  return typeof code === 'undefined' || code === SUCCESS
-}
+export function useStateCheck (code, options) {
+  const success = options?.states?.success || SUCCESS
+  const invalidAccessToken = options?.states?.invalidAccessToken || INVALID_ACCESS_TOKEN
+  const invalidRefreshToken = options?.states?.invalidRefreshToken || INVALID_REFRESH_TOKEN
 
-export function isAccessTokenInvalid (code) {
-  return typeof code !== 'undefined' && code === INVALID_ACCESS_TOKEN
-}
-
-export function isRefreshTokenInvalid (code) {
-  return typeof code !== 'undefined' && code === INVALID_REFRESH_TOKEN
+  return {
+    /**
+     * request success
+     * server side return binary file stream, for example, file download
+     * @returns {boolean}
+     */
+    isSuccess: () => typeof code === 'undefined' || code === success,
+    isAccessTokenInvalid: () => code === invalidAccessToken,
+    isRefreshTokenInvalid: () => code === invalidRefreshToken
+  }
 }
 
 /**
@@ -99,19 +102,15 @@ export function timeConvert (time) {
 /**
  * Generate an axios request setting
  *
- * @export
  * @param {string} url
  * @param {object} data
  * @param {object} userSettings
- * @returns
+ * @returns {object}
  */
 export function buildSettings (url, data, userSettings) {
-  const settings = Object.assign({
-    method: 'post'
-  }, userSettings, {
-    url,
-    data: data || {}
-  })
+  const baseSettings = { method: 'post' }
+  const requestSettings = { url, data: data || {} }
+  const settings = Object.assign(baseSettings, userSettings, requestSettings)
   // change `data` field to `params` when method type is `GET`
   if (
     settings.method.toLowerCase() === method.get &&
@@ -122,23 +121,4 @@ export function buildSettings (url, data, userSettings) {
   }
 
   return settings
-}
-
-/**
- * Setup the functions need to export
- *
- * @param {object} instance - the HttpRequest instance
- * @returns {object} http methods and util set
- */
-export function httpSetup (instance) {
-  return {
-    http: (...params) => instance.fetch.apply(instance, params),
-    get: (...params) => instance.get.apply(instance, params),
-    post: (...params) => instance.post.apply(instance, params),
-    put: (...params) => instance.put.apply(instance, params),
-    patch: (...params) => instance.patch.apply(instance, params),
-    del: (...params) => instance.delete.apply(instance, params),
-    cancel: () => instance.cancel(),
-    isSessionTimeout: () => instance.isSessionTimeout()
-  }
 }
