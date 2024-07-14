@@ -1,12 +1,12 @@
 import axios from 'axios'
 
-import { key, HEADER_ACCESS_TOKEN } from './constants'
+import { key, HEADER_ACCESS_TOKEN, message, exception } from './constants'
 import { handleToken } from './storage'
 import { refreshAccessToken } from './handle'
-import { isAccessTokenInvalid } from './utils'
+import { useStateCheck } from './utils'
 import { Cache } from './cache'
 
-export function prototype (options, canceller) {
+export function prototype (options) {
   // refreshing access token
   let isRefreshing = false
   let waitingQueue = []
@@ -44,7 +44,6 @@ export function prototype (options, canceller) {
       if (token) {
         config.headers[HEADER_ACCESS_TOKEN] = token
       }
-      // config.signal = canceller.getCancelControl().signal
       return config
     },
     error => Promise.reject(error)
@@ -53,68 +52,35 @@ export function prototype (options, canceller) {
    * response interceptors
    */
   http.interceptors.response.use(
-    async response => { // Any status code from range of 2xx
+    // Any status code from range of 2xx
+    async response => {
       const originalRequest = response.config
-      const { data: { code } } = response
+      const { isAccessTokenInvalid } = useStateCheck(response?.data?.code, options)
       // success and business exception
-      if (!isAccessTokenInvalid(code)) return response
-      console.log('isRefreshing:', isRefreshing)
+      if (!isAccessTokenInvalid()) return response
       /**
        * Authorization failed
        * only handle access token invalid and need to refresh situation below
        */
       if (!isRefreshing) {
         isRefreshing = true
-        // let errorResult
-        console.log(originalRequest.data)
 
         try {
           const resp = await refreshAccessToken(http, options)
-          // update access token
+          // update the access token in storage
           handleToken(resp.data, options)
           // retry original request
           return await http(originalRequest)
         } catch (error) {
-          console.log('waitingQueue length:', waitingQueue.length)
-          // errorResult = error
-          // canceller.cancel()
           return Promise.reject(error)
         } finally {
           isRefreshing = false
           handleQueue()
         }
-
-        // return refreshAccessToken(http, options)
-        //   .then(resp => {
-        //     // update access token
-        //     handleToken(resp.data, options)
-        //     // handleQueue()
-        //     // request again with new access token and return to caller
-        //     return http(originalRequest).then(data => {
-        //       // handleQueue()
-        //       return data
-        //     })
-        //   })
-        //   .catch(error => {
-        //     // handleQueue(error)
-        //     console.log('waitingQueue length:', waitingQueue.length)
-        //     errorResult = error
-        //     return Promise.reject(error)
-        //   })
-        //   // .catch(error => {
-        //   //   handleQueue(error)
-        //   //   return Promise.reject(error)
-        //   // })
-        //   .finally(() => {
-        //     isRefreshing = false
-        //     handleQueue(errorResult)
-        //   })
       } else {
         // other requests put into waiting queue when refresh work in execution
         return new Promise((resolve, reject) => {
           waitingQueue.push(error => {
-            // console.log('signal aborted:', originalRequest.signal.aborted)
-            // console.log('queue', error)
             if (error) {
               reject(error)
             } else {
@@ -124,13 +90,31 @@ export function prototype (options, canceller) {
         })
       }
     },
-    error => { // Any status codes outside range of 2xx
-      console.log(error)
-      return Promise.reject(error)
-    }
+    // Any status codes outside range of 2xx
+    error => Promise.reject(error)
   )
 
   return http
 }
 
 export const CancelToken = axios.CancelToken
+
+export class Exception extends Error {
+  constructor (msg = message.error, type = exception.business) {
+    super(msg)
+
+    this.type = type
+  }
+
+  isAuthInvalid () {
+    return this.type === exception.authInvalid
+  }
+
+  isBusiness () {
+    return this.type === exception.business
+  }
+
+  isCancelled () {
+    return this.type === exception.cancelled
+  }
+}
