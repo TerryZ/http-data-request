@@ -4,13 +4,13 @@ import {
   get, post, put, patch, del,
   cancel, isSessionTimeout
 } from './http'
+// import { baseUrl } from './mock'
 
 const commonUrl = 'https://run.mocky.io/v3/4a7ae569-f190-4400-bd36-2d6593e74d63'
 const commonData = {
   a: 1,
   b: 2
 }
-const baseUrl = ''
 
 export const loading = ref(false)
 
@@ -124,39 +124,4 @@ export function doDelete () {
   del(commonUrl, commonData).then(() => {
     console.log('delete request success!')
   })
-}
-export function accessTokenInvalid () {
-  // https://run.mocky.io/v3/cb5d1196-df3c-4a1e-b3c5-2c9d2e9992b4
-  // baseUrl + '/http/access-token-invalid'
-  const url = baseUrl + '/http/access-token-invalid'
-  post(url, { id: 1 })
-    .then(resp => { console.dir(resp) })
-    .catch(error => {
-      console.log(1, error)
-      // console.dir(error)
-    })
-  post(url, { id: 2 })
-    .then(resp => { console.dir(resp) })
-    .catch(error => {
-      console.log(2, error)
-      // console.dir(error)
-    })
-  post(url, { id: 3 })
-    .then(resp => { console.dir(resp) })
-    .catch(error => {
-      console.log(3, error)
-      // console.dir(error)
-    })
-  post(url, { id: 4 })
-    .then(resp => { console.dir(resp) })
-    .catch(error => {
-      console.log(4, error)
-      // console.dir(error)
-    })
-  post(url, { id: 5 })
-    .then(resp => { console.dir(resp) })
-    .catch(error => {
-      console.log(5, error)
-      // console.dir(error)
-    })
 }

@@ -145,18 +145,7 @@
       </div>
     </section>
 
-    <section class="my-3">
-      <h3>Token</h3>
-      <div>
-        <button
-          type="button"
-          class="btn btn-danger"
-          @click="accessTokenInvalid"
-        >
-          access token invalid
-        </button>
-      </div>
-    </section>
+    <ConcurrentRequests />
 
     <section class="">
       <h3 class="mt-0">
@@ -185,7 +174,6 @@
 <script setup>
 import {
   regularSuccess,
-  accessTokenInvalid,
   businessError,
   checkSessionTimeout,
   cleanStorage,
@@ -204,4 +192,5 @@ import {
 
   loading
 } from './example-index'
+import ConcurrentRequests from './ConcurrentRequests.vue'
 </script>
