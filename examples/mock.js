@@ -1,7 +1,10 @@
 import Mock from 'mockjs'
+import HttpRequestMock from 'http-request-mock'
 
 export const path = 'http://http-data-request.com'
 export const baseUrl = ''
+
+const mocker = HttpRequestMock.setup()
 
 // 设置延迟响应
 Mock.setup({
@@ -74,3 +77,25 @@ Mock.mock(path + '/auth/refresh-token', () => {
 // Mock.setup({
 //   timeout: '10-100'
 // })
+
+mocker.mock({
+  url: path + '/500-error',
+  status: 500,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+mocker.mock({
+  url: path + '/long-time',
+  status: 200,
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  delay: 10000,
+  response () {
+    return {
+      a: 1,
+      b: 2
+    }
+  }
+})

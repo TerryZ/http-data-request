@@ -1,10 +1,14 @@
 import { ref } from 'vue'
+// import sinon from 'sinon'
+
 import {
   http,
   get, post, put, patch, del,
   cancel, isSessionTimeout
 } from './http'
 // import { baseUrl } from './mock'
+
+// const server = sinon.fakeServer.create()
 
 const commonUrl = 'https://run.mocky.io/v3/4a7ae569-f190-4400-bd36-2d6593e74d63'
 const commonData = {
@@ -69,7 +73,8 @@ export function successWithCustomAccess () {
     .then(resp => {})
 }
 export function error500 () {
-  post('https://run.mocky.io/v3/6ce6b422-e3e3-4d8b-a204-65c92ea096a2')
+  // 'https://run.mocky.io/v3/6ce6b422-e3e3-4d8b-a204-65c92ea096a2'
+  post('/500-error')
     .then(resp => {})
     .catch(error => {
       console.log(error)
@@ -77,17 +82,20 @@ export function error500 () {
 }
 export function doCancel () {
   loading.value = true
-
-  http(commonUrl + '?mocky-delay=10s')
-    .then(() => { console.log('request success!') })
+  // commonUrl + '?mocky-delay=10s'
+  http('/long-time')
+    .then(data => {
+      console.log('request success!')
+      console.log(data)
+    })
     .catch(error => {
       console.dir(error)
     })
+    .finally(() => {
+      loading.value = false
+    })
 
-  setTimeout(() => {
-    cancel()
-    loading.value = false
-  }, 3000)
+  setTimeout(cancel, 3000)
 }
 export function cleanStorage () {
   Cache.clear()
