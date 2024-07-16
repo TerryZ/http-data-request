@@ -33,7 +33,7 @@ export function regularSuccess () {
     })
 }
 export function businessError () {
-  http('/http/business-error')
+  http('/business-error')
     .then(resp => console.log('then-' + resp))
     .catch(resp => {
       console.log(typeof resp)
@@ -50,7 +50,6 @@ export function regularTimeout () {
     })
 }
 export function longTimeRequest () {
-  // baseUrl + '/http/request-long-time'
   const url = commonUrl + '?mocky-delay=10s'
   // const url = '/long-time'
 
@@ -134,4 +133,13 @@ export function doDelete () {
   del(commonUrl, commonData).then(() => {
     console.log('delete request success!')
   })
+}
+export function noBody () {
+  post('/no-body')
+    .then(resp => console.log(resp))
+    .catch(error => {
+    // console.log(typeof resp)
+    // console.dir(resp)
+      console.log(error)
+    })
 }

@@ -4,41 +4,47 @@
       <h3 class="mt-0">
         常规使用场景
       </h3>
-      <a
-        href="javascript: void(0)"
-        class="me-3"
-        @click="regularSuccess"
-      >请求成功</a>
 
-      <a
-        href="javascript: void(0)"
-        class="me-3"
-        @click="businessError"
-      >业务错误</a>
+      <div class="mb-3">
+        <a
+          href="javascript: void(0)"
+          class="me-3"
+          @click="regularSuccess"
+        >请求成功</a>
+        <a
+          href="javascript: void(0)"
+          class="me-3"
+          @click="businessError"
+        >业务错误</a>
+        <a
+          href="javascript: void(0)"
+          class="me-3"
+          @click="regularTimeout"
+        >用户授权失效(服务器)</a>
+        <a
+          href="javascript: void(0)"
+          class="me-3"
+          @click="successWithAccess"
+        >请求成功，并带有 token 相关信息</a>
+        <a
+          href="javascript: void(0)"
+          class="me-3"
+          @click="successWithCustomAccess"
+        >请求成功，并带有非标准 token 字段信息</a>
+      </div>
 
-      <a
-        href="javascript: void(0)"
-        class="me-3"
-        @click="regularTimeout"
-      >用户授权失效(服务器)</a>
-
-      <a
-        href="javascript: void(0)"
-        class="me-3"
-        @click="successWithAccess"
-      >请求成功，并带有 token 相关信息</a>
-
-      <a
-        href="javascript: void(0)"
-        class="me-3"
-        @click="successWithCustomAccess"
-      >请求成功，并带有非标准 token 字段信息</a>
-
-      <a
-        href="javascript: void(0)"
-        class="me-3"
-        @click="error500"
-      >500-error</a>
+      <div>
+        <a
+          href="javascript: void(0)"
+          class="me-3"
+          @click="noBody"
+        >no response body</a>
+        <a
+          href="javascript: void(0)"
+          class="me-3"
+          @click="error500"
+        >500-error</a>
+      </div>
     </section>
 
     <section class="my-3">
@@ -177,6 +183,7 @@ import {
   regularTimeout,
   successWithAccess,
   successWithCustomAccess,
+  noBody,
 
   loading
 } from './example-index'
