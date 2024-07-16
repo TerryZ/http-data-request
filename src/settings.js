@@ -2,8 +2,8 @@ import axios from 'axios'
 
 import { key, HEADER_ACCESS_TOKEN, message, exception } from './constants'
 import { handleToken } from './storage'
-import { refreshAccessToken } from './handle'
 import { useStateCheck } from './utils'
+import { refreshAccessToken } from './handle'
 import { Cache } from './cache'
 
 export function prototype (options) {
@@ -31,7 +31,6 @@ export function prototype (options) {
    * the timeout option in axios is response timeout, not connection timeout
    */
   http.defaults.timeout = options.timeout
-  // if(!ie9) axios.defaults.baseURL = config.baseUrl;
   http.defaults.withCredentials = false
 
   /**
@@ -96,8 +95,6 @@ export function prototype (options) {
 
   return http
 }
-
-export const CancelToken = axios.CancelToken
 
 export class Exception extends Error {
   constructor (msg = message.error, type = exception.business) {

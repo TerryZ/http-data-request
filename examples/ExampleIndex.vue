@@ -4,53 +4,41 @@
       <h3 class="mt-0">
         常规使用场景
       </h3>
-      <button
-        type="button"
-        class="btn btn-secondary me-3"
+      <a
+        href="javascript: void(0)"
+        class="me-3"
         @click="regularSuccess"
-      >
-        请求成功
-      </button>
+      >请求成功</a>
 
-      <button
-        type="button"
-        class="btn btn-danger me-3"
+      <a
+        href="javascript: void(0)"
+        class="me-3"
         @click="businessError"
-      >
-        业务错误
-      </button>
+      >业务错误</a>
 
-      <button
-        type="button"
-        class="btn btn-warning me-3"
+      <a
+        href="javascript: void(0)"
+        class="me-3"
         @click="regularTimeout"
-      >
-        用户授权失效（服务器）
-      </button>
+      >用户授权失效(服务器)</a>
 
-      <button
-        type="button"
-        class="btn btn-success me-3"
+      <a
+        href="javascript: void(0)"
+        class="me-3"
         @click="successWithAccess"
-      >
-        请求成功，并带有 token 相关信息
-      </button>
+      >请求成功，并带有 token 相关信息</a>
 
-      <button
-        type="button"
-        class="btn btn-success me-3"
+      <a
+        href="javascript: void(0)"
+        class="me-3"
         @click="successWithCustomAccess"
-      >
-        请求成功，并带有非标准 token 字段信息
-      </button>
+      >请求成功，并带有非标准 token 字段信息</a>
 
-      <button
-        type="button"
-        class="btn btn-danger me-3"
+      <a
+        href="javascript: void(0)"
+        class="me-3"
         @click="error500"
-      >
-        http-500
-      </button>
+      >500-error</a>
     </section>
 
     <section class="my-3">

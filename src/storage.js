@@ -11,15 +11,16 @@ export function handleToken (data, options) {
   if (!data || !Object.keys(data).length) return
 
   const { access } = data
+
   if (!access || !Object.keys(access).length) return
 
-  if (options.keyAccessToken in access) {
+  if (Object.hasOwn(access, options.keyAccessToken)) {
     Cache.set(key.token, access[options.keyAccessToken])
   }
-  if ('refreshToken' in access) {
+  if (Object.hasOwn(access, 'refreshToken')) {
     Cache.set(key.refreshToken, access.refreshToken)
   }
-  if (options.keyExpiresIn in access) {
+  if (Object.hasOwn(access, options.keyExpiresIn)) {
     Cache.set(key.refreshExpires, access[options.keyExpiresIn])
   }
 }

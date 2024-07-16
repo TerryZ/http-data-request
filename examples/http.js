@@ -33,10 +33,3 @@ export const {
   http, get, post, put, patch, del,
   cancel, isSessionTimeout
 } = useHttpDataRequest(options)
-
-// const instance = new Http(options)
-
-// export const {
-//   http, get, post, put, patch, del,
-//   cancel, isSessionTimeout
-// } = httpSetup(instance)

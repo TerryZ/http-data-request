@@ -6,6 +6,7 @@ import {
   get, post, put, patch, del,
   cancel, isSessionTimeout
 } from './http'
+import { Cache } from '@/cache'
 // import { baseUrl } from './mock'
 
 // const server = sinon.fakeServer.create()
@@ -49,24 +50,24 @@ export function regularTimeout () {
     })
 }
 export function longTimeRequest () {
-  // https://run.mocky.io/v3/712ef867-3fa4-4c2b-b775-eda431ace708?mocky-delay=10s
   // baseUrl + '/http/request-long-time'
-  post(
-    'https://run.mocky.io/v3/712ef867-3fa4-4c2b-b775-eda431ace708?mocky-delay=10s',
-    undefined,
-    {
-      timeout: 1000
-    }
-  )
-    .then(resp => console.log('then-' + resp))
+  const url = commonUrl + '?mocky-delay=10s'
+  // const url = '/long-time'
+
+  post(url, undefined, {
+    timeout: 100
+  })
+    .then(resp => console.log(resp))
     .catch(resp => {
       console.log(typeof resp)
       console.log('catch-' + resp)
     })
 }
 export function successWithAccess () {
-  http('https://run.mocky.io/v3/eaaebad0-9578-4550-b177-e928c6217926')
-    .then(resp => {})
+  http('/login-success-with-access-token')
+    .then(resp => {
+      console.log(resp)
+    })
 }
 export function successWithCustomAccess () {
   http('https://run.mocky.io/v3/5628ccfe-141b-4241-ade5-14d89c67411e')

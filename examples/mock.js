@@ -11,6 +11,14 @@ Mock.setup({
   timeout: '500-3000'
 })
 
+function success (data) {
+  return {
+    code: 0,
+    msg: 'ok',
+    data
+  }
+}
+
 Mock.mock(path + '/http/request-long-time', () => {
   return {
     code: 0,
@@ -34,13 +42,7 @@ Mock.mock(path + '/http/access-token-invalid', options => {
   // console.log('/http/access-token-invalid', refreshed)
   if (refreshed) {
     // 第二次是在刷新 access token 后，请求成功
-    return {
-      code: 0,
-      msg: 'ok',
-      data: {
-        refreshed: true
-      }
-    }
+    return success({ refreshed: true })
   } else {
     // 第一次请求，要求刷新 access token
     return {
@@ -78,6 +80,19 @@ Mock.mock(path + '/auth/refresh-token', () => {
 //   timeout: '10-100'
 // })
 
+// mocker.mock 的 status 值默认为 200
+mocker.mock({
+  url: path + '/business-error',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  response () {
+    return {
+      code: 100,
+      msg: ''
+    }
+  }
+})
 mocker.mock({
   url: path + '/500-error',
   status: 500,
@@ -87,15 +102,30 @@ mocker.mock({
 })
 mocker.mock({
   url: path + '/long-time',
-  status: 200,
   headers: {
     'Content-Type': 'application/json'
   },
-  delay: 10000,
   response () {
-    return {
-      a: 1,
-      b: 2
-    }
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(success({
+          a: 1,
+          b: 2
+        }))
+      }, 10000)
+    })
   }
+})
+mocker.mock({
+  url: path + '/login-success-with-access-token',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  response: () => success({
+    access: {
+      accessToken: 'access-token-refresh-success',
+      refreshToken: 'the-new-refresh-token',
+      expiresIn: 10086
+    }
+  })
 })
