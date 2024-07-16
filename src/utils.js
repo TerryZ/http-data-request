@@ -1,3 +1,5 @@
+import { isAxiosError } from 'axios'
+
 import { state, exception, message, method, AXIOS_ERROR_CODE } from './constants'
 
 const { SUCCESS, INVALID_ACCESS_TOKEN, INVALID_REFRESH_TOKEN } = state
@@ -30,9 +32,9 @@ export function displayMessage (message, callback, type = exception.system) {
  * @returns {boolean}
  */
 export function isAxiosTimeout (error) {
-  return 'code' in error &&
-    error.code === AXIOS_ERROR_CODE &&
-    error.message.includes('timeout')
+  return isAxiosError(error) &&
+    error?.code === AXIOS_ERROR_CODE &&
+    error.message.startsWith('timeout of')
 }
 
 // No response body

@@ -43,6 +43,7 @@ export function prototype (options) {
       if (token) {
         config.headers[HEADER_ACCESS_TOKEN] = token
       }
+      // console.log(config)
       return config
     },
     error => Promise.reject(error)

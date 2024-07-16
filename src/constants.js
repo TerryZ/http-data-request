@@ -144,7 +144,7 @@ export const defaultOptions = {
 
 // 会话时长无限制
 export const SESSION_TIMEOUT_UNLIMITED = 0
-// axios 内部抛出异常的识别代码
+// axios generic timeout code
 export const AXIOS_ERROR_CODE = 'ECONNABORTED'
 // 在数据请求头部用于传递 access token 数据的字段名
 export const HEADER_ACCESS_TOKEN = 'x-http-request-access-token'

@@ -72,6 +72,12 @@ export function handleSystemError (response, callback) {
   // throw exception to user catch function directly
   if (response instanceof Exception) throw response
 
+  if (response instanceof Error) {
+    const msg = isAxiosTimeout(response) ? message.timeout : response.message
+    displayMessage(msg, callback)
+    throw response
+  }
+
   // http original status
   const { status } = response.response
   // Network error
@@ -81,12 +87,6 @@ export function handleSystemError (response, callback) {
   }
   if (typeof status === 'number' && status in statuses) {
     displayMessage(statuses[status], callback)
-    throw response
-  }
-
-  if (response instanceof Error) {
-    const msg = isAxiosTimeout(response) ? message.timeout : response.message
-    displayMessage(msg, callback)
     throw response
   }
 

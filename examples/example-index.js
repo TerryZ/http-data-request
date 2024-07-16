@@ -55,12 +55,13 @@ export function longTimeRequest () {
   // const url = '/long-time'
 
   post(url, undefined, {
-    timeout: 100
+    timeout: 1000
   })
     .then(resp => console.log(resp))
-    .catch(resp => {
-      console.log(typeof resp)
-      console.log('catch-' + resp)
+    .catch(error => {
+      // console.log(typeof resp)
+      // console.dir(resp)
+      console.log(error)
     })
 }
 export function successWithAccess () {
