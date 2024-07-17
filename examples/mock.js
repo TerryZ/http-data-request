@@ -55,6 +55,21 @@ function success (data) {
 
 // mocker.mock 的 status 值默认为 200
 mocker.mock({
+  url: path + '/success',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  response () {
+    return {
+      code: 0,
+      msg: 'ok',
+      data: success({
+        name: 'Terry'
+      })
+    }
+  }
+})
+mocker.mock({
   url: path + '/business-error',
   headers: {
     'Content-Type': 'application/json'
