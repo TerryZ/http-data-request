@@ -72,7 +72,7 @@ export function handleResults (data, options) {
   const { code } = data
   const { isSuccess, isRefreshTokenInvalid } = useStateCheck(code, options)
   // request success
-  // server side return binary file stream, for example file download
+  // server side return binary file stream, for example, file download
   if (isSuccess()) return handleSuccess(data, options)
   // if (isAccessTokenInvalid(code)) {}
   // user authorization invalid, need to go to login

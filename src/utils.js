@@ -10,7 +10,7 @@ const { SUCCESS, INVALID_ACCESS_TOKEN, INVALID_REFRESH_TOKEN } = state
  * @param {function} callback - the way to display message
  * @param {number} type - message type
  */
-export function displayMessage (message, callback, type = exception.system) {
+export function responseException (message, callback, type = exception.system) {
   typeof callback === 'function'
     ? callback(message, type)
     : window.alert(message)
@@ -65,12 +65,12 @@ export function useStateCheck (code, options) {
  */
 export function checkEnvironment (url, options) {
   if (!url) {
-    displayMessage(message.noUrl, options.exception)
+    responseException(message.noUrl, options.exception)
     // return Promise.reject(message.noUrl)
     return message.noUrl
   }
   if (!window.navigator.onLine) {
-    displayMessage(message.network, options.exception)
+    responseException(message.network, options.exception)
     // return Promise.reject(message.network)
     return message.network
   }

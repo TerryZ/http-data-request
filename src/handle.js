@@ -1,8 +1,9 @@
 import axios from 'axios'
+
 import { key, message, statuses, exception } from './constants'
 import { unpacking, handleResults } from './results'
 import {
-  displayMessage,
+  responseException,
   handleUrl,
   isAxiosTimeout,
   isNoResponseBody,
@@ -34,11 +35,7 @@ export function handleCancelled (response) {
  */
 export function handleAuthorization (response, callback) {
   if (response instanceof Exception && response.isAuthInvalid()) {
-    displayMessage(
-      message.authInvalid,
-      callback,
-      exception.authInvalid
-    )
+    responseException(message.authInvalid, callback, exception.authInvalid)
   }
   // throw data object to next catch
   throw response
@@ -52,7 +49,7 @@ export function handleAuthorization (response, callback) {
  */
 export function handleBusinessError (response, callback) {
   if (response instanceof Exception && response.isBusiness()) {
-    displayMessage(
+    responseException(
       response.message || message.error,
       callback,
       exception.business
@@ -63,7 +60,7 @@ export function handleBusinessError (response, callback) {
 }
 
 /**
- * Handle http(axios) original error
+ * Handle http/axios original exception
  *
  * @param {object} response
  * @param {function} callback
@@ -71,26 +68,29 @@ export function handleBusinessError (response, callback) {
 export function handleSystemError (response, callback) {
   // throw exception to user catch function directly
   if (response instanceof Exception) throw response
-
-  if (response instanceof Error) {
-    const msg = isAxiosTimeout(response) ? message.timeout : response.message
-    displayMessage(msg, callback)
+  // request timeout
+  if (isAxiosTimeout(response)) {
+    responseException(message.timeout, callback)
     throw response
   }
 
   // http original status
   const { status } = response.response
-  // Network error
+  // `Network error` exception
   if (!status) {
-    displayMessage(message.noStatus, callback)
+    responseException(message.noStatus, callback)
     throw response
   }
-  if (typeof status === 'number' && status in statuses) {
-    displayMessage(statuses[status], callback)
+  if (Object.hasOwn(statuses, status)) {
+    responseException(statuses[status], callback)
     throw response
   }
-
-  displayMessage(message.error, callback)
+  if (response instanceof Error) {
+    responseException(response.message, callback)
+    throw response
+  }
+  // rest of other exceptions
+  responseException(message.error, callback)
   throw response
 }
 
