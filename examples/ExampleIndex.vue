@@ -158,7 +158,7 @@
           class="btn btn-danger me-3"
           @click="cleanStorage"
         >
-          清空 storage 中存储的数据
+          Clear stored data
         </button>
       </div>
     </section>

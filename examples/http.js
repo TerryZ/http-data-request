@@ -1,3 +1,5 @@
+import { DialogMessageError, DialogAlertError } from 'v-dialogs'
+
 import {
   useHttpDataRequest,
   EXCEPTION_BUSINESS,
@@ -14,13 +16,12 @@ const options = {
   exception (message, type) {
     // console.log(type)
     if (type === EXCEPTION_BUSINESS) {
-      alert(message)
+      DialogMessageError(message, { language: 'cn' })
       return
     }
 
-    // alert(message)
-    console.error(message)
-    // router.replace({ path: base.login })
+    DialogAlertError(message, { language: 'cn' })
+
     if (type === EXCEPTION_AUTH_INVALID) {
       console.log('登录授权失效后续处理，通常跳转至登录')
       // console.log(cancel)

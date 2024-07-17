@@ -1,4 +1,6 @@
 import { ref } from 'vue'
+
+import { DialogMessageSuccess } from 'v-dialogs'
 // import sinon from 'sinon'
 
 import {
@@ -23,10 +25,11 @@ export function regularSuccess () {
   // console.log(typeof http)
   // http('https://www.mocky.io/v2/5ae5838e2e00005d003824ab', undefined, { method: 'put' })
   // this.$http('https://www.mocky.io/v2/5ae5838e2e00005d003824ab')
-  http(commonUrl)
+  http('/success')
     .then(resp => {
       console.log('then method')
       console.log(resp)
+      DialogMessageSuccess('Request success!')
     })
     .catch(resp => {
       console.log('catch-' + resp)
