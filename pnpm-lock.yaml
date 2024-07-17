@@ -54,6 +54,9 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.5.3
+      v-dialogs:
+        specifier: ^3.0.2
+        version: 3.0.2(vue@3.4.31(typescript@5.5.3))
       vite:
         specifier: ^5.3.1
         version: 5.3.3(@types/node@20.14.10)
@@ -1824,6 +1827,11 @@ packages:
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
+
+  v-dialogs@3.0.2:
+    resolution: {integrity: sha512-JJT8yx6tqgM3uJIIEF5vujPVFN0v/a+zxsWb682IJ4gq+1TNTaQrGNsphq5ddE5AlKXjKjxlMIGPKnGHsBmqEg==}
+    peerDependencies:
+      vue: ^3.2.0
 
   vite-node@2.0.2:
     resolution: {integrity: sha512-w4vkSz1Wo+NIQg8pjlEn0jQbcM/0D+xVaYjhw3cvarTanLLBh54oNiRbsT8PNK5GfuST0IlVXjsNRoNlqvY/fw==}
@@ -3874,6 +3882,10 @@ snapshots:
   util-deprecate@1.0.2: {}
 
   uuid@8.3.2: {}
+
+  v-dialogs@3.0.2(vue@3.4.31(typescript@5.5.3)):
+    dependencies:
+      vue: 3.4.31(typescript@5.5.3)
 
   vite-node@2.0.2(@types/node@20.14.10):
     dependencies:
