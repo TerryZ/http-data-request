@@ -8,7 +8,8 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@example': fileURLToPath(new URL('./examples', import.meta.url))
     }
   },
   build: {
@@ -30,6 +31,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     reporters: 'verbose',
+    globalSetup: './src/__test__/global-setup.js',
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
