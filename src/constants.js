@@ -121,6 +121,7 @@ export const exception = {
  * Default options
  */
 export const defaultOptions = {
+  language: '',
   baseUrl: '/',
   // 执行刷新 refresh token 的 api 位置
   refreshUrl: '/auth/refresh-token',

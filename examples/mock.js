@@ -5,7 +5,7 @@ export const baseUrl = ''
 
 const mocker = HttpRequestMock.setup()
 
-function success (data) {
+export function success (data) {
   return {
     code: 0,
     msg: 'ok',
@@ -60,13 +60,9 @@ mocker.mock({
     'Content-Type': 'application/json'
   },
   response () {
-    return {
-      code: 0,
-      msg: 'ok',
-      data: success({
-        name: 'Terry'
-      })
-    }
+    return success({
+      name: 'Terry'
+    })
   }
 })
 mocker.mock({
