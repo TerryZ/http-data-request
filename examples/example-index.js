@@ -8,6 +8,7 @@ import {
   get, post, put, patch, del,
   cancel, isSessionTimeout
 } from './http'
+import { pushLog } from './log-board'
 import { Cache } from '@/cache'
 // import { baseUrl } from './mock'
 
@@ -27,8 +28,9 @@ export function regularSuccess () {
   // this.$http('https://www.mocky.io/v2/5ae5838e2e00005d003824ab')
   http('/success')
     .then(resp => {
-      console.log('then method')
-      console.log(resp)
+      // console.log('then method')
+      // console.log(resp)
+      pushLog(resp)
       DialogMessageSuccess('Request success!')
     })
     .catch(resp => {
@@ -39,9 +41,10 @@ export function businessError () {
   http('/business-error')
     .then(resp => console.log('then-' + resp))
     .catch(resp => {
-      console.log(typeof resp)
-      console.dir(resp)
-      console.log('catch-' + resp)
+      // console.log(typeof resp)
+      // console.dir(resp)
+      // console.log('catch-' + resp)
+      pushLog({ message: resp.message, type: resp.type }, true)
     })
 }
 export function regularTimeout () {
@@ -82,6 +85,8 @@ export function error500 () {
     .then(resp => {})
     .catch(error => {
       console.log(error)
+      const { status, statusText } = error.response
+      pushLog({ status, statusText }, true)
     })
 }
 export function doCancel () {
@@ -113,28 +118,28 @@ export function checkSessionTimeout () {
   window.alert(isSessionTimeout())
 }
 export function doGet () {
-  get(commonUrl, commonData).then(() => {
-    console.log('get request success!')
+  get('/success').then(() => {
+    pushLog('get request success!')
   })
 }
 export function doPost () {
-  post(commonUrl, commonData).then(() => {
-    console.log('post request success!')
+  post('/success').then(() => {
+    pushLog('post request success!')
   })
 }
 export function doPut () {
-  put(commonUrl, commonData).then(() => {
-    console.log('put request success!')
+  put('/success').then(() => {
+    pushLog('put request success!')
   })
 }
 export function doPatch () {
-  patch(commonUrl, commonData).then(() => {
-    console.log('patch request success!')
+  patch('/success').then(() => {
+    pushLog('patch request success!')
   })
 }
 export function doDelete () {
-  del(commonUrl, commonData).then(() => {
-    console.log('delete request success!')
+  del('/success').then(() => {
+    pushLog('delete request success!')
   })
 }
 export function noBody () {

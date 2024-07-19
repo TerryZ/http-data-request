@@ -1,7 +1,8 @@
-// import HttpRequestMock from 'http-request-mock'
+import { setAccessTokenInvalid, setRefreshTokenInvalid } from '@example/mock'
 
-import '@example/mock'
-
-export function setup () {
-
+export function setup ({ provide }) {
+  provide({
+    setAccessTokenInvalid,
+    setRefreshTokenInvalid
+  })
 }

@@ -5,6 +5,9 @@ export const baseUrl = ''
 
 const mocker = HttpRequestMock.setup()
 
+let accessTokenInvalid = true
+let refreshTokenInvalid = false
+
 export function success (data) {
   return {
     code: 0,
@@ -12,46 +15,16 @@ export function success (data) {
     data
   }
 }
-
-// // let refreshed = false
-
-// // Mock.mock(path + '/http/access-token-invalid', options => {
-// //   // console.log('/http/access-token-invalid', refreshed)
-// //   if (refreshed) {
-// //     // 第二次是在刷新 access token 后，请求成功
-// //     return success({ refreshed: true })
-// //   } else {
-// //     // 第一次请求，要求刷新 access token
-// //     return {
-// //       code: 10,
-// //       msg: 'access token invalid.',
-// //       data: {}
-// //     }
-// //   }
-// // })
-
-// // Mock.mock(path + '/auth/refresh-token', () => {
-// //   // console.log('/auth/refresh-token', refreshed)
-// //   refreshed = true
-// //   // 刷新 token 成功
-// //   // return {
-// //   //   code: 0,
-// //   //   msg: 'ok',
-// //   //   data: {
-// //   //     access: {
-// //   //       accessToken: 'access-token-refresh-success',
-// //   //       refreshToken: 'the-new-refresh-token',
-// //   //       expiresIn: 10086
-// //   //     }
-// //   //   }
-// //   // }
-// //   // 刷新 token 失败
-// //   return {
-// //     code: 11,
-// //     msg: 'refresh token invalid.',
-// //     data: {}
-// //   }
-// // })
+export function setAccessTokenInvalid (val) {
+  accessTokenInvalid = val
+}
+export function setRefreshTokenInvalid (val) {
+  refreshTokenInvalid = val
+}
+export function resetTokenState () {
+  accessTokenInvalid = true
+  refreshTokenInvalid = false
+}
 
 // mocker.mock 的 status 值默认为 200
 mocker.mock({
@@ -116,5 +89,52 @@ mocker.mock({
   },
   response () {
 
+  }
+})
+
+mocker.mock({
+  url: path + '/auth/access-token-invalid',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  response () {
+    if (accessTokenInvalid) {
+      // access token 失效，要求刷新
+      return {
+        code: 10,
+        msg: 'access token invalid.',
+        data: {}
+      }
+    } else {
+      // 刷新 access token 后，请求成功
+      return success({ message: 'access token refresh and load data success.' })
+    }
+  }
+})
+
+mocker.mock({
+  url: path + '/auth/refresh-token',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  response () {
+    if (refreshTokenInvalid) {
+      // 刷新 token 失败
+      return {
+        code: 11,
+        msg: 'refresh token invalid.',
+        data: {}
+      }
+    } else {
+      setAccessTokenInvalid(false)
+      // 刷新 token 成功
+      return success({
+        access: {
+          accessToken: 'access-token-refresh-success',
+          refreshToken: 'the-new-refresh-token',
+          expiresIn: 10086
+        }
+      })
+    }
   }
 })

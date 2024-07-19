@@ -1,6 +1,33 @@
 <template>
-  <section class="my-3">
+  <section class="mb-5">
     <h3>Token</h3>
+    <h4>access token 失效</h4>
+    <div class="mb-3 d-flex">
+      <div class="me-3">
+        <ol class="text-body-secondary">
+          <li>access token invalid</li>
+          <li>refresh access token(success)</li>
+          <li>resend request and get data</li>
+        </ol>
+        <a
+          href="javascript: void(0)"
+          @click="accessTokenInvalidRefreshSuccess"
+        >access token 失效，刷新成功</a>
+      </div>
+      <div>
+        <ol class="text-body-secondary">
+          <li>access token invalid</li>
+          <li>refresh access token(failure)</li>
+          <li>redirect to login</li>
+        </ol>
+        <a
+          href="javascript: void(0)"
+          @click="accessTokenInvalidRefreshFail"
+        >access token 失效，刷新失败</a>
+      </div>
+    </div>
+
+    <h4>并发请求</h4>
     <div class="d-flex">
       <div class="me-3">
         request1:
@@ -53,8 +80,15 @@
 <script setup>
 import { ref } from 'vue'
 
-import { baseUrl } from './mock'
+import {
+  setAccessTokenInvalid,
+  setRefreshTokenInvalid,
+  resetTokenState
+} from './mock'
+import { pushLog } from './log-board'
 import { post } from './http'
+
+const urlAccessTokenInvalid = '/auth/access-token-invalid'
 
 const request1 = ref('')
 const request2 = ref('')
@@ -65,7 +99,6 @@ const request5 = ref('')
 function accessTokenInvalid () {
   // https://run.mocky.io/v3/cb5d1196-df3c-4a1e-b3c5-2c9d2e9992b4
   // baseUrl + '/http/access-token-invalid'
-  const url = baseUrl + '/http/access-token-invalid'
 
   request1.value = 'loading...'
   request2.value = 'loading...'
@@ -73,40 +106,57 @@ function accessTokenInvalid () {
   request4.value = 'loading...'
   request5.value = 'loading...'
 
-  post(url, { id: 1 })
+  post(urlAccessTokenInvalid, { id: 1 })
     .then(resp => { console.dir(resp) })
     .catch(error => {
       request1.value = error.message
       console.log(1, error)
       // console.dir(error)
     })
-  post(url, { id: 2 })
+  post(urlAccessTokenInvalid, { id: 2 })
     .then(resp => { console.dir(resp) })
     .catch(error => {
       request2.value = error.message
       console.log(2, error)
       // console.dir(error)
     })
-  post(url, { id: 3 })
+  post(urlAccessTokenInvalid, { id: 3 })
     .then(resp => { console.dir(resp) })
     .catch(error => {
       request3.value = error.message
       console.log(3, error)
       // console.dir(error)
     })
-  post(url, { id: 4 })
+  post(urlAccessTokenInvalid, { id: 4 })
     .then(resp => { console.dir(resp) })
     .catch(error => {
       request4.value = error.message
       console.log(4, error)
       // console.dir(error)
     })
-  post(url, { id: 5 })
+  post(urlAccessTokenInvalid, { id: 5 })
     .then(resp => { console.dir(resp) })
     .catch(error => {
       request5.value = error.message
       console.log(5, error)
       // console.dir(error)
     })
+}
+
+function accessTokenInvalidRefreshSuccess () {
+  post(urlAccessTokenInvalid)
+    .then(resp => { pushLog(resp) })
+    .catch(error => { console.dir(error) })
+    .finally(() => resetTokenState())
+}
+function accessTokenInvalidRefreshFail () {
+  setRefreshTokenInvalid(true)
+  post(urlAccessTokenInvalid)
+    .then(resp => { pushLog(resp) })
+    .catch(error => {
+      pushLog({ message: error.message, type: error.type }, true)
+      console.dir(error)
+    })
+    .finally(() => resetTokenState())
 }
 </script>
