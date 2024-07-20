@@ -99,7 +99,7 @@ mocker.mock({
   headers: {
     'Content-Type': 'application/json'
   },
-  delay: 1500,
+  delay: 1000,
   response () {
     if (accessTokenInvalid) {
       // access token 失效，要求刷新
@@ -114,7 +114,6 @@ mocker.mock({
     }
   }
 })
-
 mocker.mock({
   url: path + '/auth/refresh-token',
   headers: {
@@ -138,6 +137,20 @@ mocker.mock({
           expiresIn: 10086
         }
       })
+    }
+  }
+})
+mocker.mock({
+  url: path + '/auth/access-token-and-refresh-token-invalid',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  delay: 1000,
+  response () {
+    return {
+      code: 11,
+      msg: 'refresh token invalid.',
+      data: {}
     }
   }
 })

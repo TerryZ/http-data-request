@@ -14,7 +14,7 @@
           @click="accessTokenInvalidRefreshSuccess"
         >access token 失效，刷新成功</a>
       </div>
-      <div>
+      <div class="me-3">
         <ol class="text-body-secondary">
           <li>access token invalid</li>
           <li>refresh access token(failure)</li>
@@ -24,6 +24,17 @@
           href="javascript: void(0)"
           @click="accessTokenInvalidRefreshFail"
         >access token 失效，刷新失败</a>
+      </div>
+      <div>
+        <ol class="text-body-secondary">
+          <li>request with access token</li>
+          <li>response refresh token invalid</li>
+          <li>redirect to login</li>
+        </ol>
+        <a
+          href="javascript: void(0)"
+          @click="accessTokenAndRefreshTokenInvalid"
+        >使用 access token 请求，响应 refresh token 失效</a>
       </div>
     </div>
 
@@ -71,14 +82,14 @@
         class="btn btn-success me-3"
         @click="multipleRefreshSuccess(false)"
       >
-        access token invalid refresh success
+        refresh success with access token invalid
       </button>
       <button
         type="button"
         class="btn btn-danger"
         @click="multipleRefreshSuccess(true)"
       >
-        access token invalid refresh failure
+        refresh failure with access token invalid
       </button>
     </div>
   </section>
@@ -188,6 +199,12 @@ function accessTokenInvalidRefreshFail () {
       pushLog({ message: error.message, type: error.type }, true)
       console.dir(error)
     })
+    .finally(() => resetTokenState())
+}
+function accessTokenAndRefreshTokenInvalid () {
+  post('/auth/access-token-and-refresh-token-invalid')
+    .then(resp => { pushLog(resp) })
+    .catch(error => pushErrorLog(error))
     .finally(() => resetTokenState())
 }
 </script>

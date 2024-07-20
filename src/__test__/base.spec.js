@@ -177,5 +177,17 @@ describe('http-data-request base', () => {
         expect(exceptionParams[1]).toBe(EXCEPTION_AUTH_INVALID)
       }
     })
+    test('使用 access token 请求，响应 refresh token 失效', async () => {
+      try {
+        await post('/auth/access-token-and-refresh-token-invalid')
+      } catch (error) {
+        expect(error.message).toBe('您的登录授权已失效！')
+        expect(error.type).toBe(EXCEPTION_AUTH_INVALID)
+
+        const exceptionParams = handleException.mock.calls.at(-1)
+        expect(exceptionParams[0]).toBe('您的登录授权已失效！')
+        expect(exceptionParams[1]).toBe(EXCEPTION_AUTH_INVALID)
+      }
+    })
   })
 })
