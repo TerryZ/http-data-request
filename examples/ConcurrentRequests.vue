@@ -128,61 +128,25 @@ function multipleRefreshSuccess (fail = false) {
     setRefreshTokenInvalid(true)
   }
 
-  post(urlAccessTokenInvalid, { id: 1 })
-    .then(resp => {
-      pushLog(resp)
-      request1.value = 'Load data successfully'
-    })
-    .catch(error => {
-      request1.value = error.message
-      console.log(1, error)
-      // console.dir(error)
-      pushErrorLog(error)
-    })
-  post(urlAccessTokenInvalid, { id: 2 })
-    .then(resp => {
-      pushLog(resp)
-      request2.value = 'Load data successfully'
-    })
-    .catch(error => {
-      request2.value = error.message
-      console.log(2, error)
-      // console.dir(error)
-      pushErrorLog(error)
-    })
-  post(urlAccessTokenInvalid, { id: 3 })
-    .then(resp => {
-      pushLog(resp)
-      request3.value = 'Load data successfully'
-    })
-    .catch(error => {
-      request3.value = error.message
-      console.log(3, error)
-      // console.dir(error)
-      pushErrorLog(error)
-    })
-  post(urlAccessTokenInvalid, { id: 4 })
-    .then(resp => {
-      pushLog(resp)
-      request4.value = 'Load data successfully'
-    })
-    .catch(error => {
-      request4.value = error.message
-      console.log(4, error)
-      // console.dir(error)
-      pushErrorLog(error)
-    })
-  post(urlAccessTokenInvalid, { id: 5 })
-    .then(resp => {
-      pushLog(resp)
-      request5.value = 'Load data successfully'
-    })
-    .catch(error => {
-      request5.value = error.message
-      console.log(5, error)
-      // console.dir(error)
-      pushErrorLog(error)
-    })
+  function handleRequest (params, status) {
+    post(urlAccessTokenInvalid, params)
+      .then(resp => {
+        pushLog(resp)
+        status.value = 'Load data successfully'
+      })
+      .catch(error => {
+        status.value = error.message
+        // console.log(1, error)
+        // console.dir(error)
+        pushErrorLog(error)
+      })
+  }
+
+  handleRequest({ id: 1 }, request1)
+  handleRequest({ id: 2 }, request2)
+  handleRequest({ id: 3 }, request3)
+  handleRequest({ id: 4 }, request4)
+  handleRequest({ id: 5 }, request5)
 }
 
 function accessTokenInvalidRefreshSuccess () {
