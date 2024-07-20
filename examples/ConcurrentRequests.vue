@@ -115,20 +115,13 @@ const request5 = ref('')
 
 function multipleRefreshSuccess (fail = false) {
   resetTokenState()
-  // https://run.mocky.io/v3/cb5d1196-df3c-4a1e-b3c5-2c9d2e9992b4
-  // baseUrl + '/http/access-token-invalid'
-
-  request1.value = 'loading...'
-  request2.value = 'loading...'
-  request3.value = 'loading...'
-  request4.value = 'loading...'
-  request5.value = 'loading...'
 
   if (fail) {
     setRefreshTokenInvalid(true)
   }
 
   function handleRequest (params, status) {
+    status.value = 'loading...'
     post(urlAccessTokenInvalid, params)
       .then(resp => {
         pushLog(resp)

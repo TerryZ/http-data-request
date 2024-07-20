@@ -138,9 +138,7 @@ export const defaultOptions = {
     invalidAccessToken: state.INVALID_ACCESS_TOKEN,
     invalidRefreshToken: state.INVALID_REFRESH_TOKEN
   },
-  exception: function (message, type) {
-    window.alert(message)
-  }
+  exception: (message, type) => window.alert(message)
 }
 
 // 会话时长无限制
