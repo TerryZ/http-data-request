@@ -1,9 +1,9 @@
 <template>
   <div
     class="d-grid"
-    style="grid-template-columns: auto 40rem;"
+    style="grid-template-columns: auto 40rem;height: 100vh;"
   >
-    <div class="p-3">
+    <div class="p-3 overflow-auto">
       <section class="mb-5">
         <h3 class="mt-0">
           常规使用场景

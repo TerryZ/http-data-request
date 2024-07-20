@@ -1,4 +1,4 @@
-import { DialogMessageError, DialogAlertError } from 'v-dialogs'
+// import { DialogMessageError, DialogAlertError } from 'v-dialogs'
 
 import {
   useHttpDataRequest,
@@ -16,14 +16,16 @@ const options = {
   exception (message, type) {
     // console.log(type)
     if (type === EXCEPTION_BUSINESS) {
-      DialogMessageError(message, { language: 'cn' })
+      // DialogMessageError(message, { language: 'cn' })
+      console.warn(message)
       return
     }
 
-    DialogAlertError(message, { language: 'cn' })
+    // DialogAlertError(message, { language: 'cn' })
+    console.error(message)
 
     if (type === EXCEPTION_AUTH_INVALID) {
-      console.log('登录授权失效后续处理，通常跳转至登录')
+      console.error('登录授权失效后续处理，通常跳转至登录')
       // console.log(cancel)
       cancel()
     }

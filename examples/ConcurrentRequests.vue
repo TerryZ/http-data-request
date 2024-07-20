@@ -28,7 +28,7 @@
     </div>
 
     <h4>并发请求</h4>
-    <div class="d-flex">
+    <div class="d-flex flex-column mb-3">
       <div class="me-3">
         request1:
         <span
@@ -68,10 +68,17 @@
     <div>
       <button
         type="button"
-        class="btn btn-danger"
-        @click="accessTokenInvalid"
+        class="btn btn-success me-3"
+        @click="multipleRefreshSuccess(false)"
       >
-        access token invalid
+        access token invalid refresh success
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        @click="multipleRefreshSuccess(true)"
+      >
+        access token invalid refresh failure
       </button>
     </div>
   </section>
@@ -81,11 +88,10 @@
 import { ref } from 'vue'
 
 import {
-  setAccessTokenInvalid,
   setRefreshTokenInvalid,
   resetTokenState
 } from './mock'
-import { pushLog } from './log-board'
+import { pushLog, pushErrorLog } from './log-board'
 import { post } from './http'
 
 const urlAccessTokenInvalid = '/auth/access-token-invalid'
@@ -96,7 +102,8 @@ const request3 = ref('')
 const request4 = ref('')
 const request5 = ref('')
 
-function accessTokenInvalid () {
+function multipleRefreshSuccess (fail = false) {
+  resetTokenState()
   // https://run.mocky.io/v3/cb5d1196-df3c-4a1e-b3c5-2c9d2e9992b4
   // baseUrl + '/http/access-token-invalid'
 
@@ -106,40 +113,64 @@ function accessTokenInvalid () {
   request4.value = 'loading...'
   request5.value = 'loading...'
 
+  if (fail) {
+    setRefreshTokenInvalid(true)
+  }
+
   post(urlAccessTokenInvalid, { id: 1 })
-    .then(resp => { console.dir(resp) })
+    .then(resp => {
+      pushLog(resp)
+      request1.value = 'Load data successfully'
+    })
     .catch(error => {
       request1.value = error.message
       console.log(1, error)
       // console.dir(error)
+      pushErrorLog(error)
     })
   post(urlAccessTokenInvalid, { id: 2 })
-    .then(resp => { console.dir(resp) })
+    .then(resp => {
+      pushLog(resp)
+      request2.value = 'Load data successfully'
+    })
     .catch(error => {
       request2.value = error.message
       console.log(2, error)
       // console.dir(error)
+      pushErrorLog(error)
     })
   post(urlAccessTokenInvalid, { id: 3 })
-    .then(resp => { console.dir(resp) })
+    .then(resp => {
+      pushLog(resp)
+      request3.value = 'Load data successfully'
+    })
     .catch(error => {
       request3.value = error.message
       console.log(3, error)
       // console.dir(error)
+      pushErrorLog(error)
     })
   post(urlAccessTokenInvalid, { id: 4 })
-    .then(resp => { console.dir(resp) })
+    .then(resp => {
+      pushLog(resp)
+      request4.value = 'Load data successfully'
+    })
     .catch(error => {
       request4.value = error.message
       console.log(4, error)
       // console.dir(error)
+      pushErrorLog(error)
     })
   post(urlAccessTokenInvalid, { id: 5 })
-    .then(resp => { console.dir(resp) })
+    .then(resp => {
+      pushLog(resp)
+      request5.value = 'Load data successfully'
+    })
     .catch(error => {
       request5.value = error.message
       console.log(5, error)
       // console.dir(error)
+      pushErrorLog(error)
     })
 }
 

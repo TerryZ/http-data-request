@@ -97,6 +97,7 @@ mocker.mock({
   headers: {
     'Content-Type': 'application/json'
   },
+  delay: 1500,
   response () {
     if (accessTokenInvalid) {
       // access token 失效，要求刷新

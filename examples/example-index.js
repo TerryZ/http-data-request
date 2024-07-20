@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 
-import { DialogMessageSuccess } from 'v-dialogs'
+// import { DialogMessageSuccess } from 'v-dialogs'
 // import sinon from 'sinon'
 
 import {
@@ -8,17 +8,13 @@ import {
   get, post, put, patch, del,
   cancel, isSessionTimeout
 } from './http'
-import { pushLog } from './log-board'
+import { pushLog, pushErrorLog } from './log-board'
 import { Cache } from '@/cache'
 // import { baseUrl } from './mock'
 
 // const server = sinon.fakeServer.create()
 
 const commonUrl = 'https://run.mocky.io/v3/4a7ae569-f190-4400-bd36-2d6593e74d63'
-const commonData = {
-  a: 1,
-  b: 2
-}
 
 export const loading = ref(false)
 
@@ -31,7 +27,7 @@ export function regularSuccess () {
       // console.log('then method')
       // console.log(resp)
       pushLog(resp)
-      DialogMessageSuccess('Request success!')
+      // DialogMessageSuccess('Request success!')
     })
     .catch(resp => {
       console.log('catch-' + resp)
@@ -44,7 +40,7 @@ export function businessError () {
       // console.log(typeof resp)
       // console.dir(resp)
       // console.log('catch-' + resp)
-      pushLog({ message: resp.message, type: resp.type }, true)
+      pushErrorLog(resp)
     })
 }
 export function regularTimeout () {
@@ -72,7 +68,8 @@ export function longTimeRequest () {
 export function successWithAccess () {
   http('/login-success-with-access-token')
     .then(resp => {
-      console.log(resp)
+      // console.dir(resp)
+      pushLog(resp, false, true)
     })
 }
 export function successWithCustomAccess () {
@@ -99,6 +96,7 @@ export function doCancel () {
     })
     .catch(error => {
       console.dir(error)
+      pushErrorLog(error)
     })
     .finally(() => {
       loading.value = false
@@ -146,8 +144,9 @@ export function noBody () {
   post('/no-body')
     .then(resp => console.log(resp))
     .catch(error => {
-    // console.log(typeof resp)
-    // console.dir(resp)
-      console.log(error)
+      // console.log(typeof resp)
+      // console.dir(resp)
+      console.dir(error)
+      pushErrorLog(error)
     })
 }
