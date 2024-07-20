@@ -32,8 +32,10 @@ mocker.mock({
   headers: {
     'Content-Type': 'application/json'
   },
-  response () {
+  response (requestInfo) {
+    // console.log(requestInfo)
     return success({
+      method: requestInfo.method,
       name: 'Terry'
     })
   }

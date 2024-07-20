@@ -1,10 +1,16 @@
 import { describe, test, expect, vi } from 'vitest'
 
-import { path } from '@example/mock'
+import {
+  path,
+  setRefreshTokenInvalid,
+  resetTokenState
+} from '@example/mock'
 import {
   useHttpDataRequest,
   EXCEPTION_BUSINESS,
-  EXCEPTION_SYSTEM
+  EXCEPTION_AUTH_INVALID,
+  EXCEPTION_SYSTEM,
+  EXCEPTION_CANCELED
 } from '@/'
 import { Cache } from '@/cache'
 import { key } from '@/constants'
@@ -27,30 +33,56 @@ export const {
 
 describe('http-data-request base', () => {
   describe('static api', () => {
-    test('http should be a function', () => {
+    test('http 应是一个函数', () => {
       expect(typeof http).toEqual('function')
     })
-    test('get should be a function', () => {
+    test('get 应是一个函数', () => {
       expect(typeof get).toEqual('function')
     })
-    test('post should be a function', () => {
+    test('post 应是一个函数', () => {
       expect(typeof post).toEqual('function')
     })
-    test('put should be a function', () => {
+    test('put应是一个函数', () => {
       expect(typeof put).toEqual('function')
     })
-    test('patch should be a function', () => {
+    test('patch 应是一个函数', () => {
       expect(typeof patch).toEqual('function')
     })
-    test('del should be a function', () => {
+    test('del 应是一个函数', () => {
       expect(typeof del).toEqual('function')
     })
-    test('cancel should be a function', () => {
+    test('cancel 应是一个函数', () => {
       expect(typeof cancel).toEqual('function')
     })
   })
+  describe('request method', () => {
+    test('http 应默认使用 POST 方法', async () => {
+      const result = await http('/success')
+      expect(result).toMatchObject({ method: 'POST' })
+    })
+    test('post 应默认使用 POST 方法', async () => {
+      const result = await post('/success')
+      expect(result).toMatchObject({ method: 'POST' })
+    })
+    test('get 应默认使用 GET 方法', async () => {
+      const result = await get('/success')
+      expect(result).toMatchObject({ method: 'GET' })
+    })
+    test('put 应默认使用 PUT 方法', async () => {
+      const result = await put('/success')
+      expect(result).toMatchObject({ method: 'PUT' })
+    })
+    test('patch 应默认使用 PATCH 方法', async () => {
+      const result = await patch('/success')
+      expect(result).toMatchObject({ method: 'PATCH' })
+    })
+    test('del 应默认使用 DELETE 方法', async () => {
+      const result = await del('/success')
+      expect(result).toMatchObject({ method: 'DELETE' })
+    })
+  })
   describe('do request', () => {
-    test('should have promise method helpers', function () {
+    test('http should have promise method helpers', function () {
       const promise = http('/success')
 
       expect(typeof promise.then).toEqual('function')
@@ -59,9 +91,9 @@ describe('http-data-request base', () => {
     test('success', async () => {
       const result = await post('/success')
       // console.log(result)
-      expect(result).toMatchObject({ name: 'Terry' })
+      expect(result).toMatchObject({ method: 'POST', name: 'Terry' })
     })
-    test('business-error', async () => {
+    test('business error', async () => {
       try {
         await post('/business-error')
       } catch (error) {
@@ -108,6 +140,42 @@ describe('http-data-request base', () => {
       // 登录成功后，完成身份令牌存储
       expect(Cache.get(key.token)).toBe('access-token-refresh-success')
       expect(Cache.get(key.refreshToken)).toBe('the-new-refresh-token')
+    })
+    test('cancel request', async () => {
+      const promise = new Promise((resolve, reject) => {
+        post('/long-time').catch(error => reject(error))
+
+        setTimeout(() => {
+          cancel()
+        }, 200)
+      })
+      try {
+        await promise
+      } catch (error) {
+        // cancel 异常不进入 options.exception 统一异常处理模块
+        expect(error.message).toBe('当前请求已被中断！')
+        expect(error.type).toBe(EXCEPTION_CANCELED)
+      }
+    })
+    test('access token 失效并刷新成功后，正确获得数据', async () => {
+      const result = await post('/auth/access-token-invalid')
+
+      expect(result.message).toBe('access token refresh and load data success.')
+    })
+    test('access token 失效并刷新失败，进入异常处理', async () => {
+      resetTokenState()
+      setRefreshTokenInvalid(true)
+
+      try {
+        await post('/auth/access-token-invalid')
+      } catch (error) {
+        expect(error.message).toBe('您的登录授权已失效！')
+        expect(error.type).toBe(EXCEPTION_AUTH_INVALID)
+
+        const exceptionParams = handleException.mock.calls.at(-1)
+        expect(exceptionParams[0]).toBe('您的登录授权已失效！')
+        expect(exceptionParams[1]).toBe(EXCEPTION_AUTH_INVALID)
+      }
     })
   })
 })

@@ -19,19 +19,15 @@ const commonUrl = 'https://run.mocky.io/v3/4a7ae569-f190-4400-bd36-2d6593e74d63'
 export const loading = ref(false)
 
 export function regularSuccess () {
-  // console.log(typeof http)
-  // http('https://www.mocky.io/v2/5ae5838e2e00005d003824ab', undefined, { method: 'put' })
-  // this.$http('https://www.mocky.io/v2/5ae5838e2e00005d003824ab')
-  http('/success')
-    .then(resp => {
-      // console.log('then method')
-      // console.log(resp)
-      pushLog(resp)
-      // DialogMessageSuccess('Request success!')
-    })
-    .catch(resp => {
-      console.log('catch-' + resp)
-    })
+  const success = http('/success')
+
+  success.then(resp => {
+    // console.log(resp)
+    pushLog(resp)
+    // DialogMessageSuccess('Request success!')
+  }).catch(resp => {
+    console.log('catch-' + resp)
+  })
 }
 export function businessError () {
   http('/business-error')

@@ -1,8 +1,5 @@
-import { setAccessTokenInvalid, setRefreshTokenInvalid } from '@example/mock'
+import '@example/mock'
 
-export function setup ({ provide }) {
-  provide({
-    setAccessTokenInvalid,
-    setRefreshTokenInvalid
-  })
+export function setup () {
+
 }
