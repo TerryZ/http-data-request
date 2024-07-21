@@ -1,7 +1,7 @@
 <template>
   <div
     class="d-grid"
-    style="grid-template-columns: auto 40rem;height: 100vh;"
+    style="grid-template-columns: auto 38rem;height: 100vh;"
   >
     <div class="p-3 overflow-auto">
       <section class="mb-5">
@@ -14,30 +14,12 @@
             href="javascript: void(0)"
             class="me-3"
             @click="regularSuccess"
-          >请求成功</a>
+          >request success</a>
           <a
             href="javascript: void(0)"
             class="me-3"
             @click="businessError"
-          >业务错误</a>
-          <a
-            href="javascript: void(0)"
-            class="me-3"
-            @click="regularTimeout"
-          >用户授权失效(服务器)</a>
-          <a
-            href="javascript: void(0)"
-            class="me-3"
-            @click="successWithAccess"
-          >请求成功，并带有 token 相关信息</a>
-          <a
-            href="javascript: void(0)"
-            class="me-3"
-            @click="successWithCustomAccess"
-          >请求成功，并带有非标准 token 字段信息</a>
-        </div>
-
-        <div>
+          >business error</a>
           <a
             href="javascript: void(0)"
             class="me-3"
@@ -46,8 +28,26 @@
           <a
             href="javascript: void(0)"
             class="me-3"
+            @click="error404"
+          >404 error</a>
+          <a
+            href="javascript: void(0)"
+            class="me-3"
             @click="error500"
-          >500-error</a>
+          >500 error</a>
+        </div>
+
+        <div>
+          <a
+            href="javascript: void(0)"
+            class="me-3"
+            @click="regularTimeout"
+          >用户授权失效(服务器)</a>
+          <a
+            href="javascript: void(0)"
+            class="me-3"
+            @click="successWithCustomAccess"
+          >请求成功，并带有非标准 token 字段信息</a>
         </div>
       </section>
 
@@ -184,10 +184,10 @@ import {
   doPost,
   doPut,
   error500,
+  error404,
   generateToken,
   longTimeRequest,
   regularTimeout,
-  successWithAccess,
   successWithCustomAccess,
   noBody,
 

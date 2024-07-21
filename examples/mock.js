@@ -61,6 +61,13 @@ mocker.mock({
   }
 })
 mocker.mock({
+  url: path + '/404-error',
+  status: 404,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+mocker.mock({
   url: path + '/long-time',
   headers: {
     'Content-Type': 'application/json'

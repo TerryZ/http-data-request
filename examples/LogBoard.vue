@@ -1,7 +1,7 @@
 <template>
   <div
     class="bg-light p-3 font-monospace"
-    style="font-size: 14px;"
+    style="font-size: 13px;"
   >
     <h2>
       Log board

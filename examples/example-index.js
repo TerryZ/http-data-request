@@ -61,20 +61,21 @@ export function longTimeRequest () {
       console.log(error)
     })
 }
-export function successWithAccess () {
-  http('/login-success-with-access-token')
-    .then(resp => {
-      // console.dir(resp)
-      pushLog(resp, false, true)
-    })
-}
 export function successWithCustomAccess () {
   http('https://run.mocky.io/v3/5628ccfe-141b-4241-ade5-14d89c67411e')
     .then(resp => {})
 }
 export function error500 () {
-  // 'https://run.mocky.io/v3/6ce6b422-e3e3-4d8b-a204-65c92ea096a2'
   post('/500-error')
+    .then(resp => {})
+    .catch(error => {
+      console.log(error)
+      const { status, statusText } = error.response
+      pushLog({ status, statusText }, true)
+    })
+}
+export function error404 () {
+  post('/404-error')
     .then(resp => {})
     .catch(error => {
       console.log(error)
@@ -98,7 +99,7 @@ export function doCancel () {
       loading.value = false
     })
 
-  setTimeout(cancel, 3000)
+  setTimeout(cancel, 1500)
 }
 export function cleanStorage () {
   Cache.clear()

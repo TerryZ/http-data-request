@@ -1,9 +1,17 @@
 <template>
   <section class="mb-5">
     <h3>Token</h3>
+    <h4>base</h4>
+    <div class="mb-3">
+      <a
+        href="javascript: void(0)"
+        class="me-3"
+        @click="successWithAccess"
+      >login success with token</a>
+    </div>
     <h4>access token 失效</h4>
     <div class="mb-3 d-flex">
-      <div class="me-3">
+      <div class="me-3 flex-grow-1 flex-shrink-0">
         <ol class="text-body-secondary">
           <li>access token invalid</li>
           <li>refresh access token(success)</li>
@@ -14,7 +22,7 @@
           @click="accessTokenInvalidRefreshSuccess"
         >access token 失效，刷新成功</a>
       </div>
-      <div class="me-3">
+      <div class="me-3 flex-grow-1 flex-shrink-0">
         <ol class="text-body-secondary">
           <li>access token invalid</li>
           <li>refresh access token(failure)</li>
@@ -25,7 +33,9 @@
           @click="accessTokenInvalidRefreshFail"
         >access token 失效，刷新失败</a>
       </div>
-      <div>
+    </div>
+    <div class="mb-3">
+      <div class="">
         <ol class="text-body-secondary">
           <li>request with access token</li>
           <li>response refresh token invalid</li>
@@ -113,6 +123,13 @@ const request3 = ref('')
 const request4 = ref('')
 const request5 = ref('')
 
+function successWithAccess () {
+  post('/login-success-with-access-token')
+    .then(resp => {
+      // console.dir(resp)
+      pushLog(resp, false, true)
+    })
+}
 function multipleRefreshSuccess (fail = false) {
   resetTokenState()
 
