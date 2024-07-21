@@ -1,8 +1,15 @@
 import axios from 'axios'
 
-import { key, HEADER_ACCESS_TOKEN, message, exception } from './constants'
+import {
+  message,
+  EXCEPTION_SYSTEM,
+  EXCEPTION_BUSINESS,
+  EXCEPTION_CANCELLED,
+  EXCEPTION_AUTH_INVALID,
+  STORAGE_KEY_ACCESS_TOKEN
+} from './constants'
 import { handleToken } from './storage'
-import { useStateCheck } from './utils'
+import { useStateCheck, getOptionKeys } from './utils'
 import { refreshAccessToken } from './handle'
 import { Cache } from './cache'
 
@@ -39,9 +46,10 @@ export function prototype (options) {
   http.interceptors.request.use(
     config => {
       // put user authorization access token in to the header
-      const token = Cache.get(key.token)
+      const token = Cache.get(STORAGE_KEY_ACCESS_TOKEN)
+      const { header } = getOptionKeys(options)
       if (token) {
-        config.headers[HEADER_ACCESS_TOKEN] = token
+        config.headers[header] = token
       }
       // console.log(config)
       return config
@@ -98,21 +106,25 @@ export function prototype (options) {
 }
 
 export class Exception extends Error {
-  constructor (msg = message.error, type = exception.business) {
+  constructor (msg = message.error, type = EXCEPTION_BUSINESS) {
     super(msg)
 
     this.type = type
   }
 
   isAuthInvalid () {
-    return this.type === exception.authInvalid
+    return this.type === EXCEPTION_AUTH_INVALID
   }
 
   isBusiness () {
-    return this.type === exception.business
+    return this.type === EXCEPTION_BUSINESS
   }
 
   isCancelled () {
-    return this.type === exception.cancelled
+    return this.type === EXCEPTION_CANCELLED
+  }
+
+  isSystem () {
+    return this.type === EXCEPTION_SYSTEM
   }
 }

@@ -1,5 +1,8 @@
 // import { handleSuccess } from './handle'
-import { message, exception } from './constants'
+import {
+  message,
+  EXCEPTION_AUTH_INVALID
+} from './constants'
 import { Exception } from './settings'
 import { handleToken, updateLastTime } from './storage'
 import { isNoResponseBody, useStateCheck } from './utils'
@@ -38,7 +41,7 @@ function fail (message) {
  * @private
  */
 function authInvalid () {
-  throw new Exception(message.authInvalid, exception.authInvalid)
+  throw new Exception(message.authInvalid, EXCEPTION_AUTH_INVALID)
 }
 
 /**

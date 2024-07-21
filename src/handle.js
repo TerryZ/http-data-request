@@ -1,13 +1,22 @@
 import axios from 'axios'
 
-import { key, message, statuses, exception } from './constants'
+import {
+  message,
+  statuses,
+  EXCEPTION_SYSTEM,
+  EXCEPTION_BUSINESS,
+  EXCEPTION_CANCELLED,
+  EXCEPTION_AUTH_INVALID,
+  STORAGE_KEY_REFRESH_TOKEN
+} from './constants'
 import { unpacking, handleResults } from './results'
 import {
   responseException,
   handleUrl,
   isAxiosTimeout,
   isNoResponseBody,
-  useStateCheck
+  useStateCheck,
+  getOptionKeys
 } from './utils'
 import { Exception } from './settings'
 import { Cache } from './cache'
@@ -21,7 +30,7 @@ export function handleCancelled (response) {
   if (axios.isCancel(response)) {
     // silently display request cancelled information in console
     console.warn(message.cancelled)
-    throw new Exception(message.cancelled, exception.cancelled)
+    throw new Exception(message.cancelled, EXCEPTION_CANCELLED)
   }
   // throw data object to next catch
   throw response
@@ -35,7 +44,7 @@ export function handleCancelled (response) {
  */
 export function handleAuthorization (response, callback) {
   if (response instanceof Exception && response.isAuthInvalid()) {
-    responseException(message.authInvalid, callback, exception.authInvalid)
+    responseException(message.authInvalid, callback, EXCEPTION_AUTH_INVALID)
   }
   // throw data object to next catch
   throw response
@@ -52,7 +61,7 @@ export function handleBusinessError (response, callback) {
     responseException(
       response.message || message.error,
       callback,
-      exception.business
+      EXCEPTION_BUSINESS
     )
   }
   // throw data object to final catch
@@ -120,17 +129,18 @@ export function httpDataRequest (http, settings, options) {
  */
 export function refreshAccessToken (instance, options) {
   const url = handleUrl(options.refreshUrl, options.baseUrl)
+  const { paramRefreshToken } = getOptionKeys(options)
   const setting = {
     method: 'post',
     url,
     data: {
-      [options.paramRefreshToken]: Cache.get(key.refreshToken)
+      [paramRefreshToken]: Cache.get(STORAGE_KEY_REFRESH_TOKEN)
     }
   }
   return instance(setting).then(resp => {
     // no response body
     if (isNoResponseBody(resp.data)) {
-      throw new Exception(message.error, exception.system)
+      throw new Exception(message.error, EXCEPTION_SYSTEM)
     }
     const { code } = resp.data
     const { isSuccess, isRefreshTokenInvalid } = useStateCheck(code, options)
@@ -140,9 +150,9 @@ export function refreshAccessToken (instance, options) {
     }
     // refresh token invalid
     if (isRefreshTokenInvalid()) {
-      throw new Exception(message.authInvalid, exception.authInvalid)
+      throw new Exception(message.authInvalid, EXCEPTION_AUTH_INVALID)
     }
     // other cases
-    throw new Exception(message.error, exception.system)
+    throw new Exception(message.error, EXCEPTION_SYSTEM)
   })
 }

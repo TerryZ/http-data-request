@@ -1,8 +1,19 @@
 import { isAxiosError } from 'axios'
 
-import { state, exception, message, method, AXIOS_ERROR_CODE } from './constants'
-
-const { SUCCESS, INVALID_ACCESS_TOKEN, INVALID_REFRESH_TOKEN } = state
+import {
+  message,
+  METHOD_GET,
+  AXIOS_ERROR_CODE,
+  KEY_HEADER_ACCESS_TOKEN,
+  KEY_ACCESS_TOKEN,
+  KEY_REFRESH_TOKEN,
+  KEY_EXPIRES_IN,
+  KEY_PARAM_REFRESH_TOKEN,
+  EXCEPTION_SYSTEM,
+  STATE_SUCCESS,
+  STATE_INVALID_ACCESS_TOKEN,
+  STATE_INVALID_REFRESH_TOKEN
+} from './constants'
 
 /**
  * Display exception message
@@ -10,7 +21,7 @@ const { SUCCESS, INVALID_ACCESS_TOKEN, INVALID_REFRESH_TOKEN } = state
  * @param {function} callback - the way to display message
  * @param {number} type - message type
  */
-export function responseException (message, callback, type = exception.system) {
+export function responseException (message, callback, type = EXCEPTION_SYSTEM) {
   typeof callback === 'function'
     ? callback(message, type)
     : window.alert(message)
@@ -43,9 +54,9 @@ export function isNoResponseBody (data) {
 }
 
 export function useStateCheck (code, options) {
-  const success = options?.states?.success || SUCCESS
-  const invalidAccessToken = options?.states?.invalidAccessToken || INVALID_ACCESS_TOKEN
-  const invalidRefreshToken = options?.states?.invalidRefreshToken || INVALID_REFRESH_TOKEN
+  const success = options?.states?.success || STATE_SUCCESS
+  const invalidAccessToken = options?.states?.invalidAccessToken || STATE_INVALID_ACCESS_TOKEN
+  const invalidRefreshToken = options?.states?.invalidRefreshToken || STATE_INVALID_REFRESH_TOKEN
 
   return {
     /**
@@ -56,6 +67,16 @@ export function useStateCheck (code, options) {
     isSuccess: () => typeof code === 'undefined' || code === success,
     isAccessTokenInvalid: () => code === invalidAccessToken,
     isRefreshTokenInvalid: () => code === invalidRefreshToken
+  }
+}
+
+export function getOptionKeys (options) {
+  return {
+    header: options?.keys?.header || KEY_HEADER_ACCESS_TOKEN,
+    accessToken: options?.keys?.accessToken || KEY_ACCESS_TOKEN,
+    refreshToken: options?.keys?.refreshToken || KEY_REFRESH_TOKEN,
+    expiresIn: options?.keys?.expiresIn || KEY_EXPIRES_IN,
+    paramRefreshToken: options?.keys?.paramRefreshToken || KEY_PARAM_REFRESH_TOKEN
   }
 }
 
@@ -115,7 +136,7 @@ export function buildSettings (url, data, userSettings) {
   const settings = Object.assign(baseSettings, userSettings, requestSettings)
   // change `data` field to `params` when method type is `GET`
   if (
-    settings.method.toLowerCase() === method.get &&
+    settings.method.toLowerCase() === METHOD_GET &&
     Object.keys(settings.data).length
   ) {
     settings.params = settings.data

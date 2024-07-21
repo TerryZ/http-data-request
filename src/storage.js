@@ -1,4 +1,11 @@
-import { SESSION_TIMEOUT_UNLIMITED, key } from './constants'
+import {
+  SESSION_TIMEOUT_UNLIMITED,
+  STORAGE_KEY_ACCESS_TOKEN,
+  STORAGE_KEY_LAST_TIME_REQUEST,
+  STORAGE_KEY_REFRESH_TOKEN,
+  STORAGE_KEY_REFRESH_TOKEN_EXPIRES
+} from './constants'
+import { getOptionKeys } from './utils'
 import { Cache } from './cache'
 
 /**
@@ -10,18 +17,19 @@ import { Cache } from './cache'
 export function handleToken (data, options) {
   if (!data || !Object.keys(data).length) return
 
+  const { accessToken, refreshToken, expiresIn } = getOptionKeys(options)
   const { access } = data
 
   if (!access || !Object.keys(access).length) return
 
-  if (Object.hasOwn(access, options.keyAccessToken)) {
-    Cache.set(key.token, access[options.keyAccessToken])
+  if (Object.hasOwn(access, accessToken)) {
+    Cache.set(STORAGE_KEY_ACCESS_TOKEN, access[accessToken])
   }
-  if (Object.hasOwn(access, 'refreshToken')) {
-    Cache.set(key.refreshToken, access.refreshToken)
+  if (Object.hasOwn(access, refreshToken)) {
+    Cache.set(STORAGE_KEY_REFRESH_TOKEN, access[refreshToken])
   }
-  if (Object.hasOwn(access, options.keyExpiresIn)) {
-    Cache.set(key.refreshExpires, access[options.keyExpiresIn])
+  if (Object.hasOwn(access, expiresIn)) {
+    Cache.set(STORAGE_KEY_REFRESH_TOKEN_EXPIRES, access[expiresIn])
   }
 }
 
@@ -29,14 +37,14 @@ export function handleToken (data, options) {
  * Record the time of last successful request
  */
 export function updateLastTime () {
-  Cache.set(key.lastTimeRequest, new Date().getTime())
+  Cache.set(STORAGE_KEY_LAST_TIME_REQUEST, new Date().getTime())
 }
 
 /**
  * Check if user authorization token is exists
  */
 function haveToken () {
-  const token = Cache.get(key.token)
+  const token = Cache.get(STORAGE_KEY_ACCESS_TOKEN)
   return Boolean(token)
 }
 
@@ -50,9 +58,9 @@ export function isSessionTimeout (sessionFreeTime) {
   // have not user authorization token
   if (!haveToken()) return true
   // first time authorized
-  if (!Cache.have(key.lastTimeRequest)) return false
+  if (!Cache.have(STORAGE_KEY_LAST_TIME_REQUEST)) return false
 
-  const lastTime = Cache.get(key.lastTimeRequest)
+  const lastTime = Cache.get(STORAGE_KEY_LAST_TIME_REQUEST)
   const gap = new Date().getTime() - lastTime
   return gap > sessionFreeTime
 }

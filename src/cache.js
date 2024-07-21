@@ -12,8 +12,8 @@ export class Cache {
     try {
       return JSON.parse(result)
     } catch (e) {
-      const exception = ['NaN', 'undefined']
-      return exception.some(val => val === result) ? null : result
+      const exceptions = ['NaN', 'undefined']
+      return exceptions.some(val => val === result) ? null : result
     }
   }
 

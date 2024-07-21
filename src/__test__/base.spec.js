@@ -13,7 +13,7 @@ import {
   EXCEPTION_CANCELED
 } from '@/'
 import { Cache } from '@/cache'
-import { key } from '@/constants'
+import { STORAGE_KEY_ACCESS_TOKEN, STORAGE_KEY_REFRESH_TOKEN } from '@/constants'
 
 const handleException = vi.fn()
 
@@ -132,14 +132,14 @@ describe('http-data-request base', () => {
     })
     test('login success with access token', async () => {
       // localStorage 中无相关身份令牌
-      expect(Cache.have(key.token)).toBeFalsy()
-      expect(Cache.have(key.refreshToken)).toBeFalsy()
+      expect(Cache.have(STORAGE_KEY_ACCESS_TOKEN)).toBeFalsy()
+      expect(Cache.have(STORAGE_KEY_REFRESH_TOKEN)).toBeFalsy()
 
       await post('/login-success-with-access-token')
 
       // 登录成功后，完成身份令牌存储
-      expect(Cache.get(key.token)).toBe('access-token-refresh-success')
-      expect(Cache.get(key.refreshToken)).toBe('the-new-refresh-token')
+      expect(Cache.get(STORAGE_KEY_ACCESS_TOKEN)).toBe('access-token-refresh-success')
+      expect(Cache.get(STORAGE_KEY_REFRESH_TOKEN)).toBe('the-new-refresh-token')
     })
     test('cancel request', async () => {
       const promise = new Promise((resolve, reject) => {

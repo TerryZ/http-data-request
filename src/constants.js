@@ -79,43 +79,41 @@ export const message = {
  *
  * rest of other codes are business exceptions
  */
-export const state = {
-  SUCCESS: 0,
-  INVALID_ACCESS_TOKEN: 10,
-  INVALID_REFRESH_TOKEN: 11
-}
-
+export const STATE_SUCCESS = 0
+export const STATE_INVALID_ACCESS_TOKEN = 10
+export const STATE_INVALID_REFRESH_TOKEN = 11
 /**
  * The key name stored in Storage
  */
-export const key = {
-  token: 'auth-access-token',
-  tokenExpires: 'auth-access-token-expires',
-  lastTimeRequest: 'auth-last-time-request',
-  refreshToken: 'auth-refresh-token',
-  refreshExpires: 'auth-refresh-token-expires'
-}
+export const STORAGE_KEY_ACCESS_TOKEN = 'auth-access-token'
+export const STORAGE_KEY_ACCESS_TOKEN_EXPIRES = 'auth-access-token-expires'
+export const STORAGE_KEY_REFRESH_TOKEN = 'auth-refresh-token'
+export const STORAGE_KEY_REFRESH_TOKEN_EXPIRES = 'auth-refresh-token-expires'
+export const STORAGE_KEY_LAST_TIME_REQUEST = 'auth-last-time-request'
 
-/**
- * Request method types
- */
-export const method = {
-  get: 'get',
-  post: 'post',
-  put: 'put',
-  patch: 'patch',
-  delete: 'delete'
-}
-
+// 会话时长无限制
+export const SESSION_TIMEOUT_UNLIMITED = 0
+// axios generic timeout code
+export const AXIOS_ERROR_CODE = 'ECONNABORTED'
+// 在数据请求头部用于传递 access token 数据的字段名
+export const KEY_HEADER_ACCESS_TOKEN = 'x-http-request-access-token'
+export const KEY_ACCESS_TOKEN = 'accessToken'
+export const KEY_REFRESH_TOKEN = 'refreshToken'
+export const KEY_EXPIRES_IN = 'expiresIn'
+export const KEY_PARAM_REFRESH_TOKEN = 'refreshToken'
 /**
  * Exception types
  */
-export const exception = {
-  business: 'exception-business',
-  authInvalid: 'exception-auth-invalid',
-  system: 'exception-system',
-  cancelled: 'exception-cancelled'
-}
+export const EXCEPTION_BUSINESS = 'exception-business'
+export const EXCEPTION_AUTH_INVALID = 'exception-auth-invalid'
+export const EXCEPTION_SYSTEM = 'exception-system'
+export const EXCEPTION_CANCELLED = 'exception-cancelled'
+/**
+ * Request method types
+ */
+export const [
+  METHOD_GET, METHOD_POST, METHOD_PUT, METHOD_PATCH, METHOD_DELETE
+] = ['get', 'post', 'put', 'patch', 'delete']
 
 /**
  * Default options
@@ -125,25 +123,22 @@ export const defaultOptions = {
   baseUrl: '/',
   // 执行刷新 refresh token 的 api 位置
   refreshUrl: '/auth/refresh-token',
-  // 执行刷新时传递 refresh token 使用的请求参数名
-  paramRefreshToken: 'refreshToken',
   // 会话默认允许空闲时长，单位：分钟
   expiresIn: 0,
-  keyAccessToken: 'accessToken',
-  keyExpiresIn: 'expiresIn',
   // 单次请求超时时间，单位：毫秒
   timeout: 20000,
+  keys: {
+    accessToken: KEY_ACCESS_TOKEN,
+    refreshToken: KEY_REFRESH_TOKEN,
+    expiresIn: KEY_EXPIRES_IN,
+    // 执行刷新时传递 refresh token 使用的请求参数名
+    paramRefreshToken: KEY_PARAM_REFRESH_TOKEN,
+    header: KEY_HEADER_ACCESS_TOKEN
+  },
   states: {
-    success: state.SUCCESS,
-    invalidAccessToken: state.INVALID_ACCESS_TOKEN,
-    invalidRefreshToken: state.INVALID_REFRESH_TOKEN
+    success: STATE_SUCCESS,
+    invalidAccessToken: STATE_INVALID_ACCESS_TOKEN,
+    invalidRefreshToken: STATE_INVALID_REFRESH_TOKEN
   },
   exception: (message, type) => window.alert(message)
 }
-
-// 会话时长无限制
-export const SESSION_TIMEOUT_UNLIMITED = 0
-// axios generic timeout code
-export const AXIOS_ERROR_CODE = 'ECONNABORTED'
-// 在数据请求头部用于传递 access token 数据的字段名
-export const HEADER_ACCESS_TOKEN = 'x-http-request-access-token'
