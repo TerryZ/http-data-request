@@ -1,7 +1,13 @@
 import { prototype } from './settings'
 import { isSessionTimeout as isSessionInvalid } from './storage'
 import { httpDataRequest } from './handle'
-import { handleUrl, timeConvert, buildSettings, checkEnvironment } from './utils'
+import {
+  handleUrl,
+  timeConvert,
+  buildSettings,
+  checkEnvironment,
+  getLanguage
+} from './utils'
 import { defaultOptions } from './constants'
 
 export function useHttpDataRequest (setupOptions) {
@@ -9,6 +15,7 @@ export function useHttpDataRequest (setupOptions) {
   const options = Object.assign({}, defaultOptions, setupOptions)
   // user authorization expires-in millisecond
   options.expiresInMillisecond = timeConvert(options.expiresIn)
+  options.lang = getLanguage(options.language)
   // create a new axios instance
   const http = prototype(options)
   /**

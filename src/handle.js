@@ -1,19 +1,18 @@
 import axios from 'axios'
 
 import {
-  message,
-  statuses,
   EXCEPTION_SYSTEM,
   EXCEPTION_BUSINESS,
   EXCEPTION_CANCELLED,
   EXCEPTION_AUTH_INVALID,
   STORAGE_KEY_REFRESH_TOKEN
 } from './constants'
-import { unpacking, handleResults } from './results'
+import { useResultHandle } from './results'
 import {
   responseException,
   handleUrl,
   isAxiosTimeout,
+  isAxiosNetworkError,
   isNoResponseBody,
   useStateCheck,
   getOptionKeys
@@ -21,86 +20,97 @@ import {
 import { Exception } from './settings'
 import { Cache } from './cache'
 
-/**
- * Catch and handle request cancelled situation
- *
- * @param {object} response
- */
-export function handleCancelled (response) {
-  if (axios.isCancel(response)) {
-    // silently display request cancelled information in console
-    console.warn(message.cancelled)
-    throw new Exception(message.cancelled, EXCEPTION_CANCELLED)
-  }
-  // throw data object to next catch
-  throw response
-}
-
-/**
- * Check if user authorization still valid
- *
- * @param {object} response
- * @param {function} callback
- */
-export function handleAuthorization (response, callback) {
-  if (response instanceof Exception && response.isAuthInvalid()) {
-    responseException(message.authInvalid, callback, EXCEPTION_AUTH_INVALID)
-  }
-  // throw data object to next catch
-  throw response
-}
-
-/**
- * Handle business exception
- *
- * @param {object} response
- * @param {function} callback
- */
-export function handleBusinessError (response, callback) {
-  if (response instanceof Exception && response.isBusiness()) {
-    responseException(
-      response.message || message.error,
-      callback,
-      EXCEPTION_BUSINESS
-    )
-  }
-  // throw data object to final catch
-  throw response
-}
-
-/**
- * Handle http/axios original exception
- *
- * @param {object} response
- * @param {function} callback
- */
-export function handleSystemError (response, callback) {
-  // throw exception to user catch function directly
-  if (response instanceof Exception) throw response
-  // request timeout
-  if (isAxiosTimeout(response)) {
-    responseException(message.timeout, callback)
+export function useExceptionHandle (options) {
+  const { lang, exception: callback } = options
+  /**
+   * Catch and handle request cancelled situation
+   *
+   * @param {object} response
+   */
+  function handleCancelled (response) {
+    if (axios.isCancel(response)) {
+      // silently display request cancelled information in console
+      console.warn(lang.message.cancelled)
+      throw new Exception(lang.message.cancelled, EXCEPTION_CANCELLED)
+    }
+    // throw data object to next catch
     throw response
   }
 
-  // http original status
-  const { status } = response.response
-  // `Network error` exception
-  if (!status) {
-    responseException(message.noStatus, callback)
+  /**
+   * Check if user authorization still valid
+   *
+   * @param {object} response
+   */
+  function handleAuthorization (response) {
+    if (response instanceof Exception && response.isAuthInvalid()) {
+      responseException(lang.message.authInvalid, callback, EXCEPTION_AUTH_INVALID)
+    }
+    // throw data object to next catch
     throw response
   }
-  if (Object.hasOwn(statuses, status)) {
-    responseException(statuses[status], callback)
+
+  /**
+   * Handle business exception
+   *
+   * @param {object} response
+   * @param {function} callback
+   */
+  function handleBusinessError (response) {
+    if (response instanceof Exception && response.isBusiness()) {
+      responseException(
+        response.message || lang.message.error,
+        callback,
+        EXCEPTION_BUSINESS
+      )
+    }
+    // throw data object to final catch
     throw response
   }
-  if (response instanceof Error) {
-    responseException(response.message, callback)
+
+  /**
+   * Handle http/axios original exception
+   *
+   * @param {object} response
+   * @param {function} callback
+   */
+  function handleSystemError (response) {
+    // throw exception to user catch function directly
+    if (response instanceof Exception) throw response
+    // request timeout
+    if (isAxiosTimeout(response)) {
+      responseException(lang.message.timeout, callback)
+      throw response
+    }
+    // low level network errors
+    if (isAxiosNetworkError(response)) {
+      responseException(lang.message.network, callback)
+      throw response
+    }
+    // http original status
+    const { status, statusText } = response.response
+    if (status) {
+      const i18nText = lang.status && Object.hasOwn(lang.status, status)
+        ? lang.status[status]
+        : statusText
+      responseException(i18nText, callback)
+      throw response
+    }
+    if (response instanceof Error) {
+      responseException(response.message, callback)
+      throw response
+    }
+    // rest of other exceptions
+    responseException(lang.message.error, callback)
     throw response
   }
-  // rest of other exceptions
-  responseException(message.error, callback)
-  throw response
+
+  return {
+    handleCancelled,
+    handleAuthorization,
+    handleBusinessError,
+    handleSystemError
+  }
 }
 
 /**
@@ -111,14 +121,20 @@ export function handleSystemError (response, callback) {
  * @param {object} options - Http plugin initialize options
  */
 export function httpDataRequest (http, settings, options) {
+  const { unpacking, handleResults } = useResultHandle(options)
+  const {
+    handleCancelled,
+    handleAuthorization,
+    handleBusinessError,
+    handleSystemError
+  } = useExceptionHandle(options)
   return http(settings)
-    // unpack axios wrapper
     .then(response => unpacking(response))
-    .then(data => handleResults(data, options))
+    .then(data => handleResults(data))
     .catch(thrown => handleCancelled(thrown))
-    .catch(thrown => handleAuthorization(thrown, options.exception))
-    .catch(thrown => handleBusinessError(thrown, options.exception))
-    .catch(thrown => handleSystemError(thrown, options.exception))
+    .catch(thrown => handleAuthorization(thrown))
+    .catch(thrown => handleBusinessError(thrown))
+    .catch(thrown => handleSystemError(thrown))
 }
 
 /**
@@ -129,6 +145,7 @@ export function httpDataRequest (http, settings, options) {
  */
 export function refreshAccessToken (instance, options) {
   const url = handleUrl(options.refreshUrl, options.baseUrl)
+  const { lang } = options
   const { paramRefreshToken } = getOptionKeys(options)
   const setting = {
     method: 'post',
@@ -140,7 +157,7 @@ export function refreshAccessToken (instance, options) {
   return instance(setting).then(resp => {
     // no response body
     if (isNoResponseBody(resp.data)) {
-      throw new Exception(message.error, EXCEPTION_SYSTEM)
+      throw new Exception(lang.message.error, EXCEPTION_SYSTEM)
     }
     const { code } = resp.data
     const { isSuccess, isRefreshTokenInvalid } = useStateCheck(code, options)
@@ -150,9 +167,9 @@ export function refreshAccessToken (instance, options) {
     }
     // refresh token invalid
     if (isRefreshTokenInvalid()) {
-      throw new Exception(message.authInvalid, EXCEPTION_AUTH_INVALID)
+      throw new Exception(lang.message.authInvalid, EXCEPTION_AUTH_INVALID)
     }
     // other cases
-    throw new Exception(message.error, EXCEPTION_SYSTEM)
+    throw new Exception(lang.message.error, EXCEPTION_SYSTEM)
   })
 }

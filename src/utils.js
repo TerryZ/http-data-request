@@ -1,9 +1,7 @@
-import { isAxiosError } from 'axios'
+import { isAxiosError, AxiosError } from 'axios'
 
 import {
-  message,
   METHOD_GET,
-  AXIOS_ERROR_CODE,
   KEY_HEADER_ACCESS_TOKEN,
   KEY_ACCESS_TOKEN,
   KEY_REFRESH_TOKEN,
@@ -14,6 +12,7 @@ import {
   STATE_INVALID_ACCESS_TOKEN,
   STATE_INVALID_REFRESH_TOKEN
 } from './constants'
+import { EN, languages } from './locale'
 
 /**
  * Display exception message
@@ -44,8 +43,12 @@ export function responseException (message, callback, type = EXCEPTION_SYSTEM) {
  */
 export function isAxiosTimeout (error) {
   return isAxiosError(error) &&
-    error?.code === AXIOS_ERROR_CODE &&
+    error?.code === AxiosError.ECONNABORTED &&
     error.message.startsWith('timeout of')
+}
+export function isAxiosNetworkError (error) {
+  return isAxiosError(error) &&
+    error?.code === AxiosError.ERR_NETWORK
 }
 
 // No response body
@@ -85,15 +88,16 @@ export function getOptionKeys (options) {
  * @param {object} options
  */
 export function checkEnvironment (url, options) {
+  const { lang } = options
   if (!url) {
-    responseException(message.noUrl, options.exception)
+    responseException(lang.message.noUrl, options.exception)
     // return Promise.reject(message.noUrl)
-    return message.noUrl
+    return lang.message.noUrl
   }
   if (!window.navigator.onLine) {
-    responseException(message.network, options.exception)
-    // return Promise.reject(message.network)
-    return message.network
+    responseException(lang.message.offline, options.exception)
+    // return Promise.reject(message.offline)
+    return lang.message.offline
   }
   // check ok
   return undefined
@@ -144,4 +148,16 @@ export function buildSettings (url, data, userSettings) {
   }
 
   return settings
+}
+/**
+ * Get language resource by language code
+ * @param {string} code - language code
+ * @returns {object} language resource
+ */
+export function getLanguage (lang = EN) {
+  const key = String(lang).toLowerCase()
+
+  if (key in languages) return languages[key]
+
+  return languages[EN]
 }

@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 import {
-  message,
   EXCEPTION_SYSTEM,
   EXCEPTION_BUSINESS,
   EXCEPTION_CANCELLED,
@@ -106,7 +105,7 @@ export function prototype (options) {
 }
 
 export class Exception extends Error {
-  constructor (msg = message.error, type = EXCEPTION_BUSINESS) {
+  constructor (msg, type = EXCEPTION_BUSINESS) {
     super(msg)
 
     this.type = type
