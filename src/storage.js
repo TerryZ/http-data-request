@@ -17,8 +17,8 @@ import { Cache } from './cache'
 export function handleToken (data, options) {
   if (!data || !Object.keys(data).length) return
 
-  const { accessToken, refreshToken, expiresIn } = getOptionKeys(options)
-  const { access } = data
+  const { dataSet, accessToken, refreshToken, expiresIn } = getOptionKeys(options)
+  const access = data[dataSet]
 
   if (!access || !Object.keys(access).length) return
 

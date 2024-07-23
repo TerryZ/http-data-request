@@ -44,6 +44,7 @@ export function useResultHandle (options) {
    */
   function unpacking (response) {
     // unpack axios wrapper
+    // console.log(response)
     return typeof response === 'object' ? response.data : response
   }
   /**

@@ -2,6 +2,7 @@ import { isAxiosError, AxiosError } from 'axios'
 
 import {
   METHOD_GET,
+  KEY_DATA_SET,
   KEY_HEADER_ACCESS_TOKEN,
   KEY_ACCESS_TOKEN,
   KEY_REFRESH_TOKEN,
@@ -75,6 +76,7 @@ export function useStateCheck (code, options) {
 
 export function getOptionKeys (options) {
   return {
+    dataSet: options?.keys?.dataSet || KEY_DATA_SET,
     header: options?.keys?.header || KEY_HEADER_ACCESS_TOKEN,
     accessToken: options?.keys?.accessToken || KEY_ACCESS_TOKEN,
     refreshToken: options?.keys?.refreshToken || KEY_REFRESH_TOKEN,
