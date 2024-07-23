@@ -1,5 +1,12 @@
 import HttpRequestMock from 'http-request-mock'
 
+import {
+  exampleAccess,
+  exampleAccessToken,
+  exampleRefreshToken,
+  exampleExpiresIn
+} from './example-utils'
+
 export const path = 'http://http-data-request.com'
 export const baseUrl = ''
 
@@ -24,6 +31,16 @@ export function setRefreshTokenInvalid (val) {
 export function resetTokenState () {
   accessTokenInvalid = true
   refreshTokenInvalid = false
+}
+
+function successWithAccess () {
+  return success({
+    [exampleAccess.value]: {
+      [exampleAccessToken.value]: 'access-token-refresh-success',
+      [exampleRefreshToken.value]: 'the-new-refresh-token',
+      [exampleExpiresIn.value]: 10086
+    }
+  })
 }
 
 // mocker.mock 的 status 值默认为 200
@@ -84,13 +101,7 @@ mocker.mock({
   headers: {
     'Content-Type': 'application/json'
   },
-  response: () => success({
-    access: {
-      accessToken: 'access-token-refresh-success',
-      refreshToken: 'the-new-refresh-token',
-      expiresIn: 10086
-    }
-  })
+  response: () => successWithAccess()
 })
 mocker.mock({
   url: path + '/no-body',
@@ -138,13 +149,7 @@ mocker.mock({
     } else {
       setAccessTokenInvalid(false)
       // 刷新 token 成功
-      return success({
-        access: {
-          accessToken: 'access-token-refresh-success',
-          refreshToken: 'the-new-refresh-token',
-          expiresIn: 10086
-        }
-      })
+      return successWithAccess()
     }
   }
 })

@@ -22,13 +22,13 @@ const options = {
   // keyExpiresIn: 'myExpiresIn',
   timeout: 2000,
   keys: {
-    dataSet: KEY_DATA_SET,
-    accessToken: KEY_ACCESS_TOKEN,
-    refreshToken: KEY_REFRESH_TOKEN,
-    expiresIn: KEY_EXPIRES_IN,
+    dataSet: exampleAccess.value,
+    accessToken: exampleAccessToken.value,
+    refreshToken: exampleRefreshToken.value,
+    expiresIn: exampleExpiresIn.value
     // 执行刷新时传递 refresh token 使用的请求参数名
-    paramRefreshToken: KEY_PARAM_REFRESH_TOKEN,
-    header: KEY_HEADER_ACCESS_TOKEN
+    // paramRefreshToken: KEY_PARAM_REFRESH_TOKEN,
+    // header: KEY_HEADER_ACCESS_TOKEN
   },
   // states: {
   //   success: STATE_SUCCESS,
