@@ -36,6 +36,7 @@ mocker.mock({
     // console.log(requestInfo)
     return success({
       method: requestInfo.method,
+      headers: requestInfo.headers,
       name: 'Terry'
     })
   }
