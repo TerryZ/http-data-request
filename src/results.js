@@ -27,7 +27,7 @@ export function useResultHandle (options) {
    *
    * @param {string} message - error messages
    */
-  function fail (message) {
+  function fail (message = lang.message.error) {
     throw new Exception(message)
   }
   /**
