@@ -51,7 +51,6 @@ export const defaultOptions = {
   baseUrl: '/',
   // the url used to refresh new access token
   refreshUrl: '/auth/refresh-token',
-  // 会话默认允许空闲时长，单位：分钟
   expiresIn: 0,
   timeout: 20000,
   keys: {
@@ -59,11 +58,11 @@ export const defaultOptions = {
     accessToken: KEY_ACCESS_TOKEN,
     refreshToken: KEY_REFRESH_TOKEN,
     expiresIn: KEY_EXPIRES_IN,
-    // 执行刷新时传递 refresh token 使用的请求参数名
+    // the key name in the header to pass access token
     paramRefreshToken: KEY_PARAM_REFRESH_TOKEN,
     header: KEY_HEADER_ACCESS_TOKEN
   },
-  states: {
+  statuses: {
     success: STATE_SUCCESS,
     invalidAccessToken: STATE_INVALID_ACCESS_TOKEN,
     invalidRefreshToken: STATE_INVALID_REFRESH_TOKEN

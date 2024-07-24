@@ -58,9 +58,9 @@ export function isNoResponseBody (data) {
 }
 
 export function useStateCheck (code, options) {
-  const success = options?.states?.success || STATE_SUCCESS
-  const invalidAccessToken = options?.states?.invalidAccessToken || STATE_INVALID_ACCESS_TOKEN
-  const invalidRefreshToken = options?.states?.invalidRefreshToken || STATE_INVALID_REFRESH_TOKEN
+  const success = options?.statuses?.success || STATE_SUCCESS
+  const invalidAccessToken = options?.statuses?.invalidAccessToken || STATE_INVALID_ACCESS_TOKEN
+  const invalidRefreshToken = options?.statuses?.invalidRefreshToken || STATE_INVALID_REFRESH_TOKEN
 
   return {
     /**
