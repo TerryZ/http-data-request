@@ -61,7 +61,7 @@ export default {
     511: '网络需要身份验证'
   },
   message: {
-    error: '系统异常，请联系管理员',
+    error: '系统异常，请稍后重试',
     authInvalid: '您的登录授权已失效',
     cancelled: '当前请求已被中断',
     timeout: '数据请求超时，请稍后重试',
