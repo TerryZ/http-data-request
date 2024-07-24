@@ -4,7 +4,10 @@ import {
   exampleAccess,
   exampleAccessToken,
   exampleRefreshToken,
-  exampleExpiresIn
+  exampleExpiresIn,
+  exampleCodeSuccess,
+  exampleCodeInvalidAccessToken,
+  exampleCodeInvalidRefreshToken
 } from './example-utils'
 
 export const path = 'http://http-data-request.com'
@@ -17,7 +20,7 @@ let refreshTokenInvalid = false
 
 export function success (data) {
   return {
-    code: 0,
+    code: exampleCodeSuccess.value,
     msg: 'ok',
     data
   }
@@ -123,7 +126,7 @@ mocker.mock({
     if (accessTokenInvalid) {
       // access token 失效，要求刷新
       return {
-        code: 10,
+        code: exampleCodeInvalidAccessToken.value,
         msg: 'access token invalid.',
         data: {}
       }
@@ -142,7 +145,7 @@ mocker.mock({
     if (refreshTokenInvalid) {
       // 刷新 token 失败
       return {
-        code: 11,
+        code: exampleCodeInvalidRefreshToken.value,
         msg: 'refresh token invalid.',
         data: {}
       }
@@ -161,7 +164,7 @@ mocker.mock({
   delay: 1000,
   response () {
     return {
-      code: 11,
+      code: exampleCodeInvalidRefreshToken.value,
       msg: 'refresh token invalid.',
       data: {}
     }

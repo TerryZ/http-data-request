@@ -13,10 +13,13 @@
     </h3>
     <div
       class="p-3 border rounded-3 shadow-sm"
-      style="width: 25rem;"
+      style="width: 30rem;"
       v-show="visible"
     >
       <div class="mb-3">
+        <h5 class="fw-bold">
+          语言
+        </h5>
         <div class="form-check form-check-inline">
           <input
             class="form-check-input"
@@ -46,7 +49,10 @@
           >简体中文</label>
         </div>
       </div>
-      <div>
+      <div class="mb-3">
+        <h5 class="fw-bold">
+          数据节点
+        </h5>
         <div class="row mb-3">
           <label
             for="input-access"
@@ -104,6 +110,53 @@
           </div>
         </div>
       </div>
+      <div class="mb-3">
+        <h5 class="fw-bold">
+          状态码
+        </h5>
+        <div class="row mb-3">
+          <label
+            for="status-success"
+            class="col-sm-5 col-form-label"
+          >success</label>
+          <div class="col-sm-7">
+            <input
+              type="email"
+              class="form-control"
+              id="status-success"
+              v-model="exampleCodeSuccess"
+            >
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label
+            for="status-access-token-invalid"
+            class="col-sm-5 col-form-label"
+          >access token invalid</label>
+          <div class="col-sm-7">
+            <input
+              type="email"
+              class="form-control"
+              id="status-access-token-invalid"
+              v-model="exampleCodeInvalidAccessToken"
+            >
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label
+            for="status-refresh-token-invalid"
+            class="col-sm-5 col-form-label"
+          >refresh token invalid</label>
+          <div class="col-sm-7">
+            <input
+              type="email"
+              class="form-control"
+              id="status-refresh-token-invalid"
+              v-model="exampleCodeInvalidRefreshToken"
+            >
+          </div>
+        </div>
+      </div>
       <div>
         <button
           type="button"
@@ -125,6 +178,9 @@ import {
   exampleAccessToken,
   exampleRefreshToken,
   exampleExpiresIn,
+  exampleCodeSuccess,
+  exampleCodeInvalidAccessToken,
+  exampleCodeInvalidRefreshToken,
   applySetting
 } from './example-utils'
 

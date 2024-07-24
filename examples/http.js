@@ -11,15 +11,16 @@ import {
   exampleAccess,
   exampleAccessToken,
   exampleRefreshToken,
-  exampleExpiresIn
+  exampleExpiresIn,
+  exampleCodeSuccess,
+  exampleCodeInvalidAccessToken,
+  exampleCodeInvalidRefreshToken
 } from './example-utils'
 
 const options = {
   language: exampleLanguage.value,
   baseUrl: path,
   expiresIn: 2,
-  // keyAccessToken: 'myToken',
-  // keyExpiresIn: 'myExpiresIn',
   timeout: 2000,
   keys: {
     dataSet: exampleAccess.value,
@@ -30,11 +31,11 @@ const options = {
     // paramRefreshToken: KEY_PARAM_REFRESH_TOKEN,
     // header: KEY_HEADER_ACCESS_TOKEN
   },
-  // states: {
-  //   success: STATE_SUCCESS,
-  //   invalidAccessToken: STATE_INVALID_ACCESS_TOKEN,
-  //   invalidRefreshToken: STATE_INVALID_REFRESH_TOKEN
-  // },
+  statuses: {
+    success: exampleCodeSuccess.value,
+    invalidAccessToken: exampleCodeInvalidAccessToken.value,
+    invalidRefreshToken: exampleCodeInvalidRefreshToken.value
+  },
   exception (message, type) {
     // console.log(type)
     if (type === EXCEPTION_BUSINESS) {
