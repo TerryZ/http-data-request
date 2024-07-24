@@ -21,8 +21,6 @@ const options = {
   language: 'zh-chs',
   baseUrl: path,
   expiresIn: 2,
-  // keyAccessToken: 'myToken',
-  // keyExpiresIn: 'myExpiresIn',
   timeout: 2000,
   exception: handleException
 }
