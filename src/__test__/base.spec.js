@@ -4,13 +4,13 @@ import {
   path,
   setRefreshTokenInvalid,
   resetTokenState
-} from '@example/mock'
+} from './mock-for-test'
 import {
   useHttpDataRequest,
   EXCEPTION_BUSINESS,
   EXCEPTION_AUTH_INVALID,
   EXCEPTION_SYSTEM,
-  EXCEPTION_CANCELED
+  EXCEPTION_CANCELLED
 } from '@/'
 import { Cache } from '@/cache'
 import { STORAGE_KEY_ACCESS_TOKEN, STORAGE_KEY_REFRESH_TOKEN } from '@/constants'
@@ -18,6 +18,7 @@ import { STORAGE_KEY_ACCESS_TOKEN, STORAGE_KEY_REFRESH_TOKEN } from '@/constants
 const handleException = vi.fn()
 
 const options = {
+  language: 'zh-chs',
   baseUrl: path,
   expiresIn: 2,
   // keyAccessToken: 'myToken',
@@ -122,11 +123,11 @@ describe('http-data-request base', () => {
       try {
         await post('/no-body')
       } catch (error) {
-        expect(error.message).toBe('系统异常，请联系管理员！')
+        expect(error.message).toBe('系统异常，请稍后重试')
 
         expect(handleException).toHaveBeenCalled()
         const exceptionParams = handleException.mock.calls.at(-1)
-        expect(exceptionParams[0]).toBe('系统异常，请联系管理员！')
+        expect(exceptionParams[0]).toBe('系统异常，请稍后重试')
         expect(exceptionParams[1]).toBe(EXCEPTION_BUSINESS)
       }
     })
@@ -141,6 +142,12 @@ describe('http-data-request base', () => {
       expect(Cache.get(STORAGE_KEY_ACCESS_TOKEN)).toBe('access-token-refresh-success')
       expect(Cache.get(STORAGE_KEY_REFRESH_TOKEN)).toBe('the-new-refresh-token')
     })
+    test('custom header key to pass access token', async () => {
+      const result = await post('/success')
+      const headers = result.headers
+      // 登录成功后，才会在头部添加该项目
+      expect(Object.hasOwn(headers, 'x-http-request-access-token')).toBeTruthy()
+    })
     test('cancel request', async () => {
       const promise = new Promise((resolve, reject) => {
         post('/long-time').catch(error => reject(error))
@@ -153,8 +160,8 @@ describe('http-data-request base', () => {
         await promise
       } catch (error) {
         // cancel 异常不进入 options.exception 统一异常处理模块
-        expect(error.message).toBe('当前请求已被中断！')
-        expect(error.type).toBe(EXCEPTION_CANCELED)
+        expect(error.message).toBe('当前请求已被中断')
+        expect(error.type).toBe(EXCEPTION_CANCELLED)
       }
     })
     test('access token 失效并刷新成功后，正确获得数据', async () => {
@@ -169,11 +176,11 @@ describe('http-data-request base', () => {
       try {
         await post('/auth/access-token-invalid')
       } catch (error) {
-        expect(error.message).toBe('您的登录授权已失效！')
+        expect(error.message).toBe('您的登录授权已失效')
         expect(error.type).toBe(EXCEPTION_AUTH_INVALID)
 
         const exceptionParams = handleException.mock.calls.at(-1)
-        expect(exceptionParams[0]).toBe('您的登录授权已失效！')
+        expect(exceptionParams[0]).toBe('您的登录授权已失效')
         expect(exceptionParams[1]).toBe(EXCEPTION_AUTH_INVALID)
       }
     })
@@ -181,11 +188,11 @@ describe('http-data-request base', () => {
       try {
         await post('/auth/access-token-and-refresh-token-invalid')
       } catch (error) {
-        expect(error.message).toBe('您的登录授权已失效！')
+        expect(error.message).toBe('您的登录授权已失效')
         expect(error.type).toBe(EXCEPTION_AUTH_INVALID)
 
         const exceptionParams = handleException.mock.calls.at(-1)
-        expect(exceptionParams[0]).toBe('您的登录授权已失效！')
+        expect(exceptionParams[0]).toBe('您的登录授权已失效')
         expect(exceptionParams[1]).toBe(EXCEPTION_AUTH_INVALID)
       }
     })
