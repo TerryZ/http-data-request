@@ -52,7 +52,7 @@ export const defaultOptions = {
   // the url used to refresh new access token
   refreshUrl: '/auth/refresh-token',
   expiresIn: 0,
-  timeout: 20000,
+  timeout: 10000,
   keys: {
     dataSet: KEY_DATA_SET,
     accessToken: KEY_ACCESS_TOKEN,
