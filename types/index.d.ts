@@ -11,8 +11,8 @@ export * from './type'
  */
 declare function httpDataRequest(
   url: string,
-  data: any,
-  options: AxiosRequestConfig
+  data?: any,
+  options?: AxiosRequestConfig
 ): Promise<any>
 
 interface HttpDataRequestMethods {

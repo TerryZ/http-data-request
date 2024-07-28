@@ -6,12 +6,14 @@ export declare type EXCEPTION_CANCELLED = 'exception-cancelled'
 
 export declare type EXCEPTION_TYPE = EXCEPTION_BUSINESS | EXCEPTION_AUTH_INVALID | EXCEPTION_SYSTEM
 
+type LanguageType = 'en' | 'zh-chs'
+
 export declare interface HttpDataRequestOptions {
   /**
    * Plugin language
    * @default `en`
    */
-  language: string
+  language?: LanguageType
   /**
    * Base url path
    * @default `/`
@@ -21,71 +23,73 @@ export declare interface HttpDataRequestOptions {
    * The url used to refresh new access token
    * @default `/auth/refresh-token`
    */
-  refreshUrl: string
+  refreshUrl?: string
   /**
    * @default 0
    */
-  expiresIn: number
+  expiresIn?: number
   /**
    * Specifies the number of milliseconds before the request times out
    * @default 10000
    */
-  timeout: number
+  timeout?: number
   /**
    * Customize the key name of the data node
    */
-  keys: {
+  keys?: {
     /**
      * Access data node name
      * @default `access`
      */
-    dataSet: string
+    dataSet?: string
     /**
      * Access token property name
      * @default `accessToken`
      */
-    accessToken: string
+    accessToken?: string
     /**
      * Refresh token property name
      * @default `refreshToken`
      */
-    refreshToken: string
+    refreshToken?: string
     /**
      * Token expires in property name
      * @default `expiresIn`
      */
-    expiresIn: string
+    expiresIn?: string
     /**
      * The property name in the request body to pass refresh token
+     * @default `refreshToken`
      */
-    paramRefreshToken: string
+    paramRefreshToken?: string
     /**
      * The property name of the request headers to pass access token
+     * @default `x-http-request-access-token`
      */
-    header: string
+    header?: string
   }
   /**
    * Customize the status code of the response
    */
-  statuses: {
+  statuses?: {
     /**
      * Success status code
      * @default 0
      */
-    success: number
+    success?: number
     /**
      * Access token invalid status code
      * @default 10
      */
-    invalidAccessToken: number
+    invalidAccessToken?: number
     /**
      * Refresh token invalid status code
      * @default 11
      */
-    invalidRefreshToken: number
+    invalidRefreshToken?: number
   }
   /**
    * Request exception handle
    */
-  exception: (message: string, type: EXCEPTION_TYPE) => void
+  exception?: (message: string, type: EXCEPTION_TYPE) => void
 }
