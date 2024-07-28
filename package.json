@@ -48,7 +48,7 @@
     "bootstrap": "^5.3.3",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.26.0",
-    "http-request-mock": "^1.8.25",
+    "http-request-mock": "^1.8.26",
     "jsdom": "^24.1.1",
     "mockjs": "^1.1.0",
     "prettier": "^3.3.3",

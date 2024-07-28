@@ -37,8 +37,8 @@ importers:
         specifier: ^9.26.0
         version: 9.27.0(eslint@8.57.0)
       http-request-mock:
-        specifier: ^1.8.25
-        version: 1.8.25
+        specifier: ^1.8.26
+        version: 1.8.26
       jsdom:
         specifier: ^24.1.1
         version: 24.1.1
@@ -1135,8 +1135,8 @@ packages:
     resolution: {integrity: sha512-7mz/721AbnJwIVbnaSv1Cz3Am0ZLT/UBwkC92VlxhXv/k/BBQfM2fXElQNC27BVGr0uwUpplYPQM9LnaBMR5NQ==}
     engines: {node: '>=8.0.0'}
 
-  http-request-mock@1.8.25:
-    resolution: {integrity: sha512-G23/fGz9ROSpC1P9UGdqXLn6pALTjAz5/Za+16a+VfGfB9fSrwY3it+PvT5WlctRa39otjS0HZqKc/xm7Roulw==}
+  http-request-mock@1.8.26:
+    resolution: {integrity: sha512-iDmnjdxNnwyMXV7Y0HEBdyZ9pnACk6//zYJs32pKtADdK5xmr7ZPRTAtsY5s89nQLItPyJ3HNQIwV//7Tqc17A==}
     engines: {node: ^12.18.0 || >=14.13.1}
     hasBin: true
 
@@ -3156,7 +3156,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  http-request-mock@1.8.25:
+  http-request-mock@1.8.26:
     dependencies:
       '@ngneat/falso': 4.0.0
       '@types/follow-redirects': 1.14.4
