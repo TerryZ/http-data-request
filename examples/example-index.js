@@ -14,7 +14,7 @@ import { Cache } from '@/cache'
 
 // const server = sinon.fakeServer.create()
 
-const commonUrl = 'https://run.mocky.io/v3/4a7ae569-f190-4400-bd36-2d6593e74d63'
+// const commonUrl = 'https://run.mocky.io/v3/4a7ae569-f190-4400-bd36-2d6593e74d63'
 
 export const loading = ref(false)
 
@@ -48,8 +48,8 @@ export function regularTimeout () {
     })
 }
 export function longTimeRequest () {
-  const url = commonUrl + '?mocky-delay=10s'
-  // const url = '/long-time'
+  // const url = commonUrl + '?mocky-delay=10s'
+  const url = '/long-time'
 
   post(url, undefined, {
     timeout: 1000
@@ -57,8 +57,9 @@ export function longTimeRequest () {
     .then(resp => console.log(resp))
     .catch(error => {
       // console.log(typeof resp)
-      // console.dir(resp)
-      console.log(error)
+      console.dir(error)
+      // console.log(error)
+      pushErrorLog(error)
     })
 }
 export function successWithCustomAccess () {

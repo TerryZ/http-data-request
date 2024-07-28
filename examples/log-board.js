@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 
 export const logList = ref([])
+export const consoleLogs = ref([])
 
 export function pushLog (data, error = false, pre = false) {
   logList.value.push({
@@ -14,4 +15,13 @@ export function pushErrorLog (error) {
 }
 export function clear () {
   logList.value = []
+}
+
+export function pushConsoleLog (message, type) {
+  consoleLogs.value.push(
+    { message, type }
+  )
+}
+export function clearConsoleLogs () {
+  consoleLogs.value = []
 }
