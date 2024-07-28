@@ -129,6 +129,26 @@ describe('http-data-request base', () => {
         expect(exceptionParams[1]).toBe(EXCEPTION_BUSINESS)
       }
     })
+    test('timeout', async () => {
+      const promise = new Promise((resolve, reject) => {
+        post('/long-time', undefined, { timeout: 200 })
+          .then(resolve)
+          .catch(error => reject(error))
+      })
+      try {
+        await promise
+      } catch (error) {
+        // console.dir(error)
+        expect(error.code).toBe('ECONNABORTED')
+        expect(error.message).toBe('timeout of 200ms exceeded')
+        expect(error.request?.isTimeout).toBeTruthy()
+
+        expect(handleException).toHaveBeenCalled()
+        const exceptionParams = handleException.mock.calls.at(-1)
+        expect(exceptionParams[0]).toBe('数据请求超时，请稍后重试')
+        expect(exceptionParams[1]).toBe(EXCEPTION_SYSTEM)
+      }
+    })
     test('login success with access token', async () => {
       // localStorage 中无相关身份令牌
       expect(Cache.have(STORAGE_KEY_ACCESS_TOKEN)).toBeFalsy()
