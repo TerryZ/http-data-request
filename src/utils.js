@@ -45,6 +45,7 @@ export function responseException (message, callback, type = EXCEPTION_SYSTEM) {
 export function isAxiosTimeout (error) {
   return isAxiosError(error) &&
     error?.code === AxiosError.ECONNABORTED &&
+    error?.request?.isTimeout &&
     error.message.startsWith('timeout of')
 }
 export function isAxiosNetworkError (error) {
