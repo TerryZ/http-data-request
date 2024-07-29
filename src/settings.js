@@ -48,7 +48,7 @@ export function prototype (options) {
       const token = Cache.get(STORAGE_KEY_ACCESS_TOKEN)
       const { header } = getOptionKeys(options)
       if (token) {
-        config.headers[header] = token
+        config.headers[header] = options.tokenPrefix ? `Bearer ${token}` : token
       }
       // console.log(config)
       return config
