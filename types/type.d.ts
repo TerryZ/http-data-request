@@ -34,6 +34,11 @@ export declare interface HttpDataRequestOptions {
    */
   timeout?: number
   /**
+   * Send token with `Bearer` prefix in headers
+   * @default true
+   */
+  tokenPrefix?: boolean
+  /**
    * Customize the key name of the data node
    */
   keys?: {
@@ -64,7 +69,7 @@ export declare interface HttpDataRequestOptions {
     paramRefreshToken?: string
     /**
      * The property name of the request headers to pass access token
-     * @default `x-http-request-access-token`
+     * @default `Authorization`
      */
     header?: string
   }
