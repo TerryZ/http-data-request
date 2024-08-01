@@ -40,4 +40,4 @@ jobs:
 
       # run tests!
       - run: npm run coverage
-      - run: codecov
+      - run: codecov upload-process -t 92d7542d-1564-4755-83f4-daffee92caf8
