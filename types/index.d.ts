@@ -9,34 +9,34 @@ export * from './type'
  * @param data the data that send to server
  * @param options axios request options
  */
-declare function httpDataRequest(
+declare function HttpDataRequest(
   url: string,
   data?: any,
   options?: AxiosRequestConfig
 ): Promise<any>
 
 interface HttpDataRequestMethods {
-  http: typeof httpDataRequest
+  http: typeof HttpDataRequest
   /**
    * Http request with get method
    */
-  get: typeof httpDataRequest
+  get: typeof HttpDataRequest
   /**
    * Http request with post method
    */
-  post: typeof httpDataRequest
+  post: typeof HttpDataRequest
   /**
    * Http request with put method
    */
-  put: typeof httpDataRequest
+  put: typeof HttpDataRequest
   /**
    * Http request with patch method
    */
-  patch: typeof httpDataRequest
+  patch: typeof HttpDataRequest
   /**
    * Http request with delete method
    */
-  del: typeof httpDataRequest
+  del: typeof HttpDataRequest
   /**
    * Cancel all current request
    */

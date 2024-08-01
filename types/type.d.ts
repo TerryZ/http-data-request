@@ -64,7 +64,7 @@ export declare interface HttpDataRequestOptions {
     paramRefreshToken?: string
     /**
      * The property name of the request headers to pass access token
-     * @default `x-http-request-access-token`
+     * @default `Authorization`
      */
     header?: string
   }
