@@ -24,7 +24,8 @@ export const STORAGE_KEY_LAST_TIME_REQUEST = 'auth-last-time-request'
 export const SESSION_TIMEOUT_UNLIMITED = 0
 export const KEY_DATA_SET = 'access'
 // the key name in the data request header used to pass access token data
-export const KEY_HEADER_ACCESS_TOKEN = 'x-http-request-access-token'
+// export const KEY_HEADER_ACCESS_TOKEN = 'x-http-request-access-token'
+export const KEY_HEADER_ACCESS_TOKEN = 'Authorization'
 export const KEY_ACCESS_TOKEN = 'accessToken'
 export const KEY_REFRESH_TOKEN = 'refreshToken'
 export const KEY_EXPIRES_IN = 'expiresIn'
@@ -53,6 +54,7 @@ export const defaultOptions = {
   refreshUrl: '/auth/refresh-token',
   expiresIn: 0,
   timeout: 10000,
+  tokenPrefix: true,
   keys: {
     dataSet: KEY_DATA_SET,
     accessToken: KEY_ACCESS_TOKEN,

@@ -34,6 +34,11 @@ export declare interface HttpDataRequestOptions {
    */
   timeout?: number
   /**
+   * Send token with `Bearer` prefix in headers
+   * @default true
+   */
+  tokenPrefix?: boolean
+  /**
    * Customize the key name of the data node
    */
   keys?: {

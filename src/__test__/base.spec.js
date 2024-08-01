@@ -164,7 +164,9 @@ describe('http-data-request base', () => {
       const result = await post('/success')
       const headers = result.headers
       // 登录成功后，才会在头部添加该项目
-      expect(Object.hasOwn(headers, 'x-http-request-access-token')).toBeTruthy()
+      expect(Object.hasOwn(headers, 'Authorization')).toBeTruthy()
+      // token 前缀
+      expect(headers.Authorization.startsWith('Bearer')).toBeTruthy()
     })
     test('cancel request', async () => {
       const promise = new Promise((resolve, reject) => {
