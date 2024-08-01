@@ -2,6 +2,21 @@
 
 Create customized data request methods for web projects
 
+## Features
+
+- Automatically save and apply authorization tokens
+- Unified handling of exception information
+- Customizable status code
+- Customizable authorization data node
+- Provides quick access functions for each request method
+- Provides a function to cancel all current requests
+
+## Examples and Documentation
+
+Documentation and examples please visit below sites
+
+- [Github pages](https://terryz.github.io/docs-utils/http-data-request/)
+
 ## Installation
 
 ```sh
