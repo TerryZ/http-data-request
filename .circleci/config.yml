@@ -43,4 +43,4 @@ jobs:
 
       # run tests!
       - run: npm run coverage
-      - run: codecov upload-process -t ${{ secrets.CODE_COV_TOKEN }}
+      - run: codecov upload-process -t $CODE_COV_TOKEN
