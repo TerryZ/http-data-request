@@ -1,0 +1,22 @@
+{
+  "name": "http-data-request-demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "http-data-request": "^1.0.0",
+    "typescript": "^5.5.4",
+    "v-dialogs": "^3.0.2",
+    "vue": "^3.4.31"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "vite": "^5.3.4"
+  }
+}
