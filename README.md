@@ -35,7 +35,7 @@ pnpm add http-data-request
 
 ### Setup to your project
 
-Add a file in the project, such as `/src/config/http/index.js`, to set the global configuration of http-data-request and export various functional functions
+Add a file in the project, such as `/src/config/http/index.js`, to set the global configuration of `http-data-request` and export various functional functions
 
 ```js
 import { useHttpDataRequest } from 'http-data-request'
@@ -96,8 +96,6 @@ import { getUser } from '@api/user'
 
 const user = ref({})
 
-getUser(10).then(data => {
-  user.value = data
-})
+getUser(10).then(data => { user.value = data })
 </script>
 ```
