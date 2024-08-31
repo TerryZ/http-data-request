@@ -6,6 +6,7 @@ Create customized data request methods for web projects
 [![code coverage](https://codecov.io/gh/TerryZ/http-data-request/branch/main/graph/badge.svg)](https://codecov.io/gh/TerryZ/http-data-request)
 [![npm version](https://img.shields.io/npm/v/http-data-request.svg)](https://www.npmjs.com/package/http-data-request)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://mit-license.org/)
+[![npm](https://img.shields.io/npm/dy/http-data-request.svg)](https://www.npmjs.com/package/http-data-request)
 
 ## Features
 
