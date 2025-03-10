@@ -1,7 +1,7 @@
 {
   "name": "http-data-request",
   "description": "http data request for project",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "TerryZ <terry5@foxmail.com>",
   "type": "module",
   "files": [
