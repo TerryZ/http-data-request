@@ -36,10 +36,7 @@ const options = {
   exception: handleException
 }
 
-export const {
-  http, get, post, put, patch, del,
-  cancel, isSessionTimeout
-} = useHttpDataRequest(options)
+const { post, cancel } = useHttpDataRequest(options)
 
 describe('http-data-request customization', () => {
   describe('do request', () => {

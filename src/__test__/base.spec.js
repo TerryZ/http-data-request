@@ -25,10 +25,7 @@ const options = {
   exception: handleException
 }
 
-export const {
-  http, get, post, put, patch, del,
-  cancel, isSessionTimeout
-} = useHttpDataRequest(options)
+const { http, get, post, put, patch, del, cancel } = useHttpDataRequest(options)
 
 describe('http-data-request base', () => {
   describe('static api', () => {
@@ -159,6 +156,14 @@ describe('http-data-request base', () => {
       // 登录成功后，完成身份令牌存储
       expect(Cache.get(STORAGE_KEY_ACCESS_TOKEN)).toBe('access-token-refresh-success')
       expect(Cache.get(STORAGE_KEY_REFRESH_TOKEN)).toBe('the-new-refresh-token')
+    })
+    test('请求时手动指定身份令牌，应优先使用指定内容而不是 localStorage 中存储的内容', async () => {
+      const result = await post('/success', undefined, {
+        headers: {
+          Authorization: 'Bearer custom-access-token'
+        }
+      })
+      expect(result.headers.Authorization).toBe('Bearer custom-access-token')
     })
     test('custom header key to pass access token', async () => {
       const result = await post('/success')
