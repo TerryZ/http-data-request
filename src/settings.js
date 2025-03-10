@@ -45,12 +45,11 @@ export function prototype (options) {
   http.interceptors.request.use(
     config => {
       // put user authorization access token in to the header
-      const token = Cache.get(STORAGE_KEY_ACCESS_TOKEN)
       const { header } = getOptionKeys(options)
-      if (token) {
+      const token = Cache.get(STORAGE_KEY_ACCESS_TOKEN)
+      if (header in config.headers === false && token) {
         config.headers[header] = options.tokenPrefix ? `Bearer ${token}` : token
       }
-      // console.log(config)
       return config
     },
     error => Promise.reject(error)

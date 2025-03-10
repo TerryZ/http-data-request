@@ -1,7 +1,6 @@
 import { ref } from 'vue'
 
 // import { DialogMessageSuccess } from 'v-dialogs'
-// import sinon from 'sinon'
 
 import {
   http,
@@ -11,8 +10,6 @@ import {
 import { pushLog, pushErrorLog } from './log-board'
 import { Cache } from '@/cache'
 // import { baseUrl } from './mock'
-
-// const server = sinon.fakeServer.create()
 
 // const commonUrl = 'https://run.mocky.io/v3/4a7ae569-f190-4400-bd36-2d6593e74d63'
 
